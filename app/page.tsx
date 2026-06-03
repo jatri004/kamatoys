@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ShieldCheck,
   Truck,
@@ -26,13 +27,25 @@ const trustBadges = [
   { icon: ShieldCheck, label: "Secure Checkout", sub: "256-bit SSL encryption" },
 ];
 
-const categories = [
+interface CategoryTile {
+  label: string;
+  href: string;
+  gradient: string;
+  emoji: string;
+  sub: string;
+  light?: boolean;
+  image?: string;
+}
+
+const categories: CategoryTile[] = [
   {
     label: "Women",
     href: "/women",
     gradient: "from-pink-200 to-rose-300",
     emoji: "💗",
     sub: "Vibrators, wands & more",
+    image: "/images/women-category.jpg",
+    light: true,
   },
   {
     label: "Men",
@@ -179,13 +192,26 @@ export default function HomePage() {
               className={`group relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br ${cat.gradient} flex flex-col justify-end p-5 hover:shadow-lg transition-all`}
               aria-label={`Shop ${cat.label}`}
             >
-              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
+              {cat.image ? (
+                <>
+                  <Image
+                    src={cat.image}
+                    alt={`${cat.label} — lingerie model holding intimate wellness products`}
+                    fill
+                    sizes="(max-width: 1024px) 50vw, 25vw"
+                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                </>
+              ) : (
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
+              )}
               <div className="relative">
-                <div className="text-2xl mb-1">{cat.emoji}</div>
+                {!cat.image && <div className="text-2xl mb-1">{cat.emoji}</div>}
                 <h3 className={`text-lg font-display font-bold ${cat.light ? "text-white" : "text-gray-900"}`}>
                   {cat.label}
                 </h3>
-                <p className={`text-xs mt-0.5 ${cat.light ? "text-gray-300" : "text-gray-700"}`}>
+                <p className={`text-xs mt-0.5 ${cat.light ? "text-gray-200" : "text-gray-700"}`}>
                   {cat.sub}
                 </p>
               </div>
