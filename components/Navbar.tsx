@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ShoppingBag,
   Heart,
@@ -45,6 +45,26 @@ export default function Navbar() {
   const [shopOpen, setShopOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Rotating faded search suggestions
+  const searchSuggestions = [
+    "strap-on",
+    "dildos",
+    "vibrators",
+    "butt plugs",
+    "lube",
+    "bondage",
+  ];
+  const [suggestionIndex, setSuggestionIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSuggestionIndex((i) => (i + 1) % searchSuggestions.length);
+    }, 2500);
+    return () => clearInterval(timer);
+  }, [searchSuggestions.length]);
+
+  const searchPlaceholder = `Search "${searchSuggestions[suggestionIndex]}"...`;
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -77,7 +97,7 @@ export default function Navbar() {
                 type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search products..."
+                placeholder={searchPlaceholder}
                 className="w-full border border-gray-200 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:border-blush-400 focus:ring-2 focus:ring-blush-100"
                 aria-label="Search products"
               />
@@ -146,7 +166,7 @@ export default function Navbar() {
               type="search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search products..."
+              placeholder={searchPlaceholder}
               className="w-full border border-gray-200 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:border-blush-400"
               aria-label="Search products"
             />
