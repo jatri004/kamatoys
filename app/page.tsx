@@ -55,6 +55,7 @@ const categories: CategoryTile[] = [
     emoji: "⚡",
     sub: "Strokers, rings & wellness",
     light: true,
+    image: "/images/men-category.jpg",
   },
   {
     label: "LGBTQ+",
@@ -206,8 +207,9 @@ export default function HomePage() {
                 <>
                   <Image
                     src={cat.image}
-                    alt={`${cat.label} — lingerie model holding intimate wellness products`}
+                    alt={`Shop ${cat.label} — intimate wellness products`}
                     fill
+                    quality={90}
                     sizes="(max-width: 1024px) 50vw, 25vw"
                     className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
                   />
