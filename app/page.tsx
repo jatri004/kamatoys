@@ -1,5 +1,19 @@
 import Link from "next/link";
-import { ShieldCheck, Truck, Package, GraduationCap, ArrowRight } from "lucide-react";
+import {
+  ShieldCheck,
+  Truck,
+  Package,
+  GraduationCap,
+  ArrowRight,
+  Link2,
+  Smartphone,
+  Vibrate,
+  Crown,
+  Gem,
+  Waves,
+  Flame,
+  Droplets,
+} from "lucide-react";
 import ProductGrid from "@/components/ProductGrid";
 import SectionHeader from "@/components/SectionHeader";
 import NewsletterForm from "@/components/NewsletterForm";
@@ -42,6 +56,21 @@ const categories = [
     emoji: "🎁",
     sub: "From £10 — perfect gift",
   },
+];
+
+// Shop-by-type tiles. Links use the existing /shop?cat=<tag> filter pattern
+// (the shop page filters products by category OR tag), so these resolve to
+// real filtered listings. Swap `icon`/`gradient` for real category artwork
+// if/when you have it — see summary notes.
+const toyTypes = [
+  { label: "Bondage", href: "/shop?cat=bondage", icon: Link2, gradient: "from-gray-800 to-rose-900", light: true },
+  { label: "App / Remote", href: "/shop?cat=app-controlled", icon: Smartphone, gradient: "from-indigo-300 to-purple-400", light: true },
+  { label: "Vibrators", href: "/shop?cat=vibrator", icon: Vibrate, gradient: "from-pink-200 to-fuchsia-300" },
+  { label: "Luxury Vibrators", href: "/shop?cat=luxury", icon: Crown, gradient: "from-amber-300 to-rose-300" },
+  { label: "Butt Plugs", href: "/shop?cat=butt-plug", icon: Gem, gradient: "from-violet-300 to-purple-400" },
+  { label: "Thrusting", href: "/shop?cat=thrusting", icon: Waves, gradient: "from-rose-300 to-pink-400" },
+  { label: "Grinders", href: "/shop?cat=grinder", icon: Flame, gradient: "from-blush-300 to-rose-400" },
+  { label: "Lube", href: "/shop?cat=lube", icon: Droplets, gradient: "from-cyan-200 to-sky-300" },
 ];
 
 const educationTeasers = [
@@ -205,6 +234,44 @@ export default function HomePage() {
           </div>
         </div>
         <div className="h-2 rainbow-gradient" />
+      </section>
+
+      {/* Shop by Type — 8 category tiles */}
+      <section
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14"
+        aria-labelledby="shop-by-type-heading"
+      >
+        <SectionHeader
+          title="Shop by Type"
+          subtitle="Browse our most popular categories"
+          href="/shop"
+          linkLabel="Shop All"
+          id="shop-by-type-heading"
+        />
+        <ul className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4">
+          {toyTypes.map(({ label, href, icon: Icon, gradient, light }) => (
+            <li key={label}>
+              <Link
+                href={href}
+                aria-label={`Shop ${label}`}
+                className="group flex flex-col items-center gap-2.5 rounded-xl p-1 focus-visible:outline-none"
+              >
+                <div
+                  className={`w-full aspect-square rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center group-hover:shadow-lg group-hover:-translate-y-0.5 transition-all`}
+                >
+                  <Icon
+                    size={26}
+                    aria-hidden="true"
+                    className={light ? "text-white" : "text-gray-900"}
+                  />
+                </div>
+                <span className="text-xs sm:text-sm font-medium text-gray-800 text-center leading-tight group-hover:text-blush-500">
+                  {label}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* New Arrivals */}
