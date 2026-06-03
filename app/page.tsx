@@ -87,13 +87,13 @@ interface ToyTypeTile {
 
 const toyTypes: ToyTypeTile[] = [
   { label: "Bondage", href: "/shop?cat=bondage", icon: Link2, gradient: "from-gray-800 to-rose-900", light: true, image: "/images/bondage-type.jpg" },
-  { label: "App / Remote", href: "/shop?cat=app-controlled", icon: Smartphone, gradient: "from-indigo-300 to-purple-400", light: true },
+  { label: "App / Remote", href: "/shop?cat=app-controlled", icon: Smartphone, gradient: "from-indigo-300 to-purple-400", light: true, image: "/images/app-remote-type.jpg" },
   { label: "Vibrators", href: "/shop?cat=vibrator", icon: Vibrate, gradient: "from-pink-200 to-fuchsia-300", image: "/images/vibrators-type.jpg" },
   { label: "Luxury Vibrators", href: "/shop?cat=luxury", icon: Crown, gradient: "from-amber-300 to-rose-300", image: "/images/luxury-vibrators-type.jpg" },
   { label: "Butt Plugs", href: "/shop?cat=butt-plug", icon: Gem, gradient: "from-violet-300 to-purple-400", image: "/images/butt-plugs-type.jpg" },
-  { label: "Thrusting", href: "/shop?cat=thrusting", icon: Waves, gradient: "from-rose-300 to-pink-400" },
+  { label: "Thrusting", href: "/shop?cat=thrusting", icon: Waves, gradient: "from-rose-300 to-pink-400", image: "/images/thrusting-type.jpg" },
   { label: "Grinders", href: "/shop?cat=grinder", icon: Flame, gradient: "from-blush-300 to-rose-400", image: "/images/grinders-type.jpg" },
-  { label: "Lube", href: "/shop?cat=lube", icon: Droplets, gradient: "from-cyan-200 to-sky-300" },
+  { label: "Lube", href: "/shop?cat=lube", icon: Droplets, gradient: "from-cyan-200 to-sky-300", image: "/images/lube-type.jpg" },
 ];
 
 const educationTeasers = [
