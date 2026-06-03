@@ -55,6 +55,7 @@ const categories: CategoryTile[] = [
     emoji: "⚡",
     sub: "Strokers, rings & wellness",
     light: true,
+    image: "/images/men-category.jpg",
   },
   {
     label: "LGBTQ+",
@@ -62,6 +63,8 @@ const categories: CategoryTile[] = [
     gradient: "from-pink-400 via-purple-400 to-blue-400",
     emoji: "🏳️‍🌈",
     sub: "Inclusive range for all",
+    light: true,
+    image: "/images/lgbtq-category.jpg",
   },
   {
     label: "Gift Cards",
@@ -69,6 +72,8 @@ const categories: CategoryTile[] = [
     gradient: "from-amber-200 to-rose-200",
     emoji: "🎁",
     sub: "From £10 — perfect gift",
+    light: true,
+    image: "/images/gift-cards-category.jpg",
   },
 ];
 
@@ -203,28 +208,29 @@ export default function HomePage() {
               aria-label={`Shop ${cat.label}`}
             >
               {cat.image ? (
-                <>
-                  <Image
-                    src={cat.image}
-                    alt={`${cat.label} — lingerie model holding intimate wellness products`}
-                    fill
-                    sizes="(max-width: 1024px) 50vw, 25vw"
-                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                </>
+                /* Image already contains its own title/marketing text, so we
+                   show it full-bleed without the overlaid label. */
+                <Image
+                  src={cat.image}
+                  alt={`Shop ${cat.label}`}
+                  fill
+                  sizes="(max-width: 1024px) 50vw, 25vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
               ) : (
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
+                <>
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
+                  <div className="relative">
+                    <div className="text-2xl mb-1">{cat.emoji}</div>
+                    <h3 className={`text-lg font-display font-bold ${cat.light ? "text-white" : "text-gray-900"}`}>
+                      {cat.label}
+                    </h3>
+                    <p className={`text-xs mt-0.5 ${cat.light ? "text-gray-200" : "text-gray-700"}`}>
+                      {cat.sub}
+                    </p>
+                  </div>
+                </>
               )}
-              <div className="relative">
-                {!cat.image && <div className="text-2xl mb-1">{cat.emoji}</div>}
-                <h3 className={`text-lg font-display font-bold ${cat.light ? "text-white" : "text-gray-900"}`}>
-                  {cat.label}
-                </h3>
-                <p className={`text-xs mt-0.5 ${cat.light ? "text-gray-200" : "text-gray-700"}`}>
-                  {cat.sub}
-                </p>
-              </div>
             </Link>
           ))}
         </div>
