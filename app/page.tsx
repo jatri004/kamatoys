@@ -3,7 +3,7 @@ import { ShieldCheck, Truck, Package, GraduationCap, ArrowRight } from "lucide-r
 import ProductGrid from "@/components/ProductGrid";
 import SectionHeader from "@/components/SectionHeader";
 import NewsletterForm from "@/components/NewsletterForm";
-import { getBestsellers, getNewArrivals, products } from "@/lib/products";
+import { getBestsellers, getNewArrivals, getTrending, products } from "@/lib/products";
 
 const trustBadges = [
   { icon: Truck, label: "Free UK Delivery", sub: "On orders over £40" },
@@ -69,6 +69,7 @@ export default function HomePage() {
   const bestsellers = getBestsellers().slice(0, 8);
   const newArrivals = getNewArrivals().slice(0, 4);
   const couplesPicks = products.filter((p) => p.category === "couples").slice(0, 4);
+  const trending = getTrending().slice(0, 8);
 
   return (
     <>
@@ -228,6 +229,18 @@ export default function HomePage() {
           />
           <ProductGrid products={couplesPicks} columns={4} />
         </div>
+      </section>
+
+      {/* Shop by Type — trending toy categories */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14" aria-labelledby="trending-heading">
+        <SectionHeader
+          title="Most-Loved Toy Types"
+          subtitle="From bondage to luxury vibes — explore our most popular categories"
+          href="/shop"
+          linkLabel="Shop All"
+          id="trending-heading"
+        />
+        <ProductGrid products={trending} columns={4} />
       </section>
 
       {/* Sign-up Discount Block */}
