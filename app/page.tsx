@@ -14,6 +14,7 @@ import {
   Waves,
   Flame,
   Droplets,
+  type LucideIcon,
 } from "lucide-react";
 import ProductGrid from "@/components/ProductGrid";
 import SectionHeader from "@/components/SectionHeader";
@@ -75,8 +76,17 @@ const categories: CategoryTile[] = [
 // (the shop page filters products by category OR tag), so these resolve to
 // real filtered listings. Swap `icon`/`gradient` for real category artwork
 // if/when you have it — see summary notes.
-const toyTypes = [
-  { label: "Bondage", href: "/shop?cat=bondage", icon: Link2, gradient: "from-gray-800 to-rose-900", light: true },
+interface ToyTypeTile {
+  label: string;
+  href: string;
+  icon: LucideIcon;
+  gradient: string;
+  light?: boolean;
+  image?: string;
+}
+
+const toyTypes: ToyTypeTile[] = [
+  { label: "Bondage", href: "/shop?cat=bondage", icon: Link2, gradient: "from-gray-800 to-rose-900", light: true, image: "/images/bondage-type.jpg" },
   { label: "App / Remote", href: "/shop?cat=app-controlled", icon: Smartphone, gradient: "from-indigo-300 to-purple-400", light: true },
   { label: "Vibrators", href: "/shop?cat=vibrator", icon: Vibrate, gradient: "from-pink-200 to-fuchsia-300" },
   { label: "Luxury Vibrators", href: "/shop?cat=luxury", icon: Crown, gradient: "from-amber-300 to-rose-300" },
@@ -275,7 +285,7 @@ export default function HomePage() {
           id="shop-by-type-heading"
         />
         <ul className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4">
-          {toyTypes.map(({ label, href, icon: Icon, gradient, light }) => (
+          {toyTypes.map(({ label, href, icon: Icon, gradient, light, image }) => (
             <li key={label}>
               <Link
                 href={href}
@@ -283,13 +293,23 @@ export default function HomePage() {
                 className="group flex flex-col items-center gap-2.5 rounded-xl p-1 focus-visible:outline-none"
               >
                 <div
-                  className={`w-full aspect-square rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center group-hover:shadow-lg group-hover:-translate-y-0.5 transition-all`}
+                  className={`relative w-full aspect-square rounded-2xl overflow-hidden bg-gradient-to-br ${gradient} flex items-center justify-center group-hover:shadow-lg group-hover:-translate-y-0.5 transition-all`}
                 >
-                  <Icon
-                    size={26}
-                    aria-hidden="true"
-                    className={light ? "text-white" : "text-gray-900"}
-                  />
+                  {image ? (
+                    <Image
+                      src={image}
+                      alt={`${label} collection`}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 12vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <Icon
+                      size={26}
+                      aria-hidden="true"
+                      className={light ? "text-white" : "text-gray-900"}
+                    />
+                  )}
                 </div>
                 <span className="text-xs sm:text-sm font-medium text-gray-800 text-center leading-tight group-hover:text-blush-500">
                   {label}
