@@ -54,7 +54,7 @@ export default function DeliveryPage() {
 
       <div className="prose prose-sm text-gray-600 space-y-4">
         <h2 className="text-lg font-display font-bold text-gray-900">Discreet Packaging Promise</h2>
-        <p>Every KamaToys order is shipped in a plain, unmarked cardboard box or padded envelope. The sender name on the parcel reads "KT Retail Ltd." — no mention of KamaToys or any indication of contents.</p>
+        <p>Every KamaDesires order is shipped in a plain, unmarked cardboard box or padded envelope. The sender name on the parcel reads "KD Retail Ltd." — no mention of KamaDesires or any indication of contents.</p>
         <p>Your bank or card statement will show "KT RETAIL LTD" as the merchant name.</p>
 
         <h2 className="text-lg font-display font-bold text-gray-900 mt-6">Order Cut-off Times</h2>

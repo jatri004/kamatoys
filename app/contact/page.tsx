@@ -30,7 +30,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <p className="font-semibold text-gray-900 text-sm">Email Us</p>
-                <p className="text-sm text-gray-600 mt-0.5">hello@kamatoys.com</p>
+                <p className="text-sm text-gray-600 mt-0.5">hello@kamadesires.com</p>
                 <p className="text-xs text-gray-400 mt-1">We reply within 24 hours on business days.</p>
               </div>
             </div>

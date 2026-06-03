@@ -63,9 +63,9 @@ export default function Navbar() {
             <Link
               href="/"
               className="flex-shrink-0 text-xl font-display font-bold tracking-tight text-black"
-              aria-label="KamaToys home"
+              aria-label="KamaDesires home"
             >
-              Kama<span className="text-blush-500">Toys</span>
+              Kama<span className="text-blush-500">Desires</span>
             </Link>
 
             {/* Search — desktop */}

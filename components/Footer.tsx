@@ -40,7 +40,7 @@ const educationLinks = [
   { label: "Education Hub", href: "/education" },
   { label: "Buying Guides", href: "/education?cat=buying-guides" },
   { label: "Wellness Blog", href: "/education?cat=wellness" },
-  { label: "About KamaToys", href: "/about" },
+  { label: "About KamaDesires", href: "/about" },
 ];
 
 const socialLinks = [
@@ -191,7 +191,7 @@ export default function Footer() {
           {/* Bottom bar */}
           <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
             <p>
-              © {new Date().getFullYear()} KamaToys Ltd. All rights reserved.
+              © {new Date().getFullYear()} KamaDesires Ltd. All rights reserved.
             </p>
             <div className="flex gap-4">
               <Link href="/privacy" className="hover:text-gray-300">

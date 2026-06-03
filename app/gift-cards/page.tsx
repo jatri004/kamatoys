@@ -97,7 +97,7 @@ export default function GiftCardsPage() {
         </button>
 
         <p className="text-xs text-gray-400 text-center">
-          Gift cards are delivered by email and never expire. Redeemable on kamatoys.com.
+          Gift cards are delivered by email and never expire. Redeemable on kamadesires.com.
         </p>
       </div>
     </div>
