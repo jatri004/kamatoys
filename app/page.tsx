@@ -64,11 +64,11 @@ const categories: CategoryTile[] = [
     sub: "Inclusive range for all",
   },
   {
-    label: "Gift Cards",
-    href: "/gift-cards",
-    gradient: "from-amber-200 to-rose-200",
-    emoji: "🎁",
-    sub: "From £10 — perfect gift",
+    label: "Couples",
+    href: "/shop?cat=couples",
+    gradient: "from-rose-300 to-pink-400",
+    emoji: "💞",
+    sub: "Explore pleasure together",
   },
 ];
 
