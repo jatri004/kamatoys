@@ -1,224 +1,457 @@
-// ── Product catalogue ───────────────────────────────────────────────────────
-// Swap `gradient` strings for real image paths once photography is available.
-// e.g. gradient: "/images/products/aurora-wand.jpg"
-// ────────────────────────────────────────────────────────────────────────────
-
-export type Category = "Solo" | "For Two" | "Wellness" | "Accessories";
+export type Category = "women" | "men" | "lgbtq" | "couples";
 
 export interface Product {
   id: string;
-  slug: string;
   name: string;
-  tagline: string;
-  description: string;
-  price: number;              // in pence (GBP)
+  slug: string;
   category: Category;
-  gradient: string;           // CSS gradient used as placeholder visual
-  materials: string;
-  dimensions: string;
-  chargingTime: string;
+  tags: string[];
+  price: number;
+  originalPrice?: number;
+  isSale: boolean;
+  isNew: boolean;
+  isBestseller: boolean;
+  rating: number;
+  reviewCount: number;
+  description: string;
   features: string[];
-  bodyNeutralNote?: string;   // short inclusive copy snippet
-  badge?: string;             // e.g. "New", "Bestseller"
+  gradient: string;
 }
 
-export const PRODUCTS: Product[] = [
+export const products: Product[] = [
   {
     id: "1",
-    slug: "aurora-wand",
-    name: "Aurora Wand",
-    tagline: "Deep, rumbly vibration meets sculptural beauty.",
+    name: "Rose Quartz Wand",
+    slug: "rose-quartz-wand",
+    category: "women",
+    tags: ["vibrator", "women", "bestseller"],
+    price: 49.99,
+    isSale: false,
+    isNew: false,
+    isBestseller: true,
+    rating: 4.8,
+    reviewCount: 312,
     description:
-      "Aurora is a fully-waterproof, rechargeable personal massager designed for external use. Eight intensity patterns, whisper-quiet motor, and a weighted silicone head deliver broad, satisfying sensation without pressure. Ideal for solo relaxation or partnered touch.",
-    price: 8900,
-    category: "Solo",
-    gradient: "linear-gradient(135deg, #c9a0c0 0%, #7b3f7e 60%, #2e1235 100%)",
-    materials: "Body-safe platinum silicone, ABS plastic. Phthalate-free. Latex-free.",
-    dimensions: "23 cm × 4.5 cm",
-    chargingTime: "90 min (USB-C magnetic)",
-    features: [
-      "8 vibration patterns",
-      "IPX7 waterproof",
-      "Whisper-quiet (<45 dB)",
-      "Single-button intuitive control",
-    ],
-    bodyNeutralNote: "Designed for anyone who enjoys broad external sensation.",
-    badge: "Bestseller",
+      "A beautifully crafted body-safe silicone wand with 10 powerful vibration patterns and whisper-quiet motor. Rechargeable via USB-C.",
+    features: ["Body-safe silicone", "Whisper-quiet motor", "Waterproof IPX7", "USB-C charging", "10 vibration modes"],
+    gradient: "from-pink-200 to-rose-300",
   },
   {
     id: "2",
-    slug: "ember-curve",
-    name: "Ember Curve",
-    tagline: "Precision pressure for pinpointed pleasure.",
+    name: "Velvet Luxe Set",
+    slug: "velvet-luxe-set",
+    category: "women",
+    tags: ["set", "women", "gift"],
+    price: 89.99,
+    originalPrice: 119.99,
+    isSale: true,
+    isNew: false,
+    isBestseller: false,
+    rating: 4.7,
+    reviewCount: 187,
     description:
-      "Ember Curve's angled tip and flexible neck let you tailor stimulation exactly where you want it. Ten whisper-quiet settings travel from barely-there to deeply satisfying. Fully rechargeable and travel-lock ready.",
-    price: 6900,
-    category: "Solo",
-    gradient: "linear-gradient(135deg, #e8c4b8 0%, #c0714f 60%, #7b3322 100%)",
-    materials: "Medical-grade silicone, ABS plastic. Phthalate-free.",
-    dimensions: "18 cm × 3 cm",
-    chargingTime: "75 min (USB-C magnetic)",
-    features: [
-      "10 intensity levels",
-      "Flexible articulating neck",
-      "IPX7 waterproof",
-      "Travel-lock mode",
-    ],
-    bodyNeutralNote: "Suitable for any body that enjoys targeted external touch.",
+      "Everything you need in one elegant gift box. Includes a dual-stimulation vibrator and premium water-based lubricant.",
+    features: ["2-piece set", "Gift box included", "Body-safe silicone", "Fragrance-free lube", "Rechargeable"],
+    gradient: "from-purple-200 to-pink-300",
   },
   {
     id: "3",
-    slug: "dusk-duo",
-    name: "Dusk Duo",
-    tagline: "Two motors, one shared experience.",
+    name: "Luna Suction Pro",
+    slug: "luna-suction-pro",
+    category: "women",
+    tags: ["suction", "women", "bestseller"],
+    price: 64.99,
+    isSale: false,
+    isNew: true,
+    isBestseller: true,
+    rating: 4.9,
+    reviewCount: 521,
     description:
-      "Dusk Duo is a wearable couples' toy that fits comfortably during partnered intimacy — hands-free vibration for both of you simultaneously. Fully adjustable, rechargeable, and controllable via app or the on-device button.",
-    price: 11900,
-    category: "For Two",
-    gradient: "linear-gradient(135deg, #f5e0d0 0%, #8e5fa8 50%, #2e1235 100%)",
-    materials: "Premium body-safe silicone. USB-C rechargeable.",
-    dimensions: "Adjustable 7–11 cm span",
-    chargingTime: "2 hrs",
-    features: [
-      "Dual independent motors",
-      "Companion app (Bluetooth)",
-      "Long-distance remote mode",
-      "12 vibration patterns",
-    ],
-    bodyNeutralNote: "Designed for any partnered configuration — solo use equally welcome.",
-    badge: "New",
+      "Innovative air-pulse technology delivers intense, touch-free stimulation. 11 suction intensities, premium silicone.",
+    features: ["Air-pulse technology", "11 intensities", "Waterproof", "USB magnetic charge", "Compact design"],
+    gradient: "from-violet-200 to-purple-300",
   },
   {
     id: "4",
-    slug: "velvet-cuff-set",
-    name: "Velvet Cuff Set",
-    tagline: "Soft restraint, serious intention.",
+    name: "Noir Rabbit Classic",
+    slug: "noir-rabbit-classic",
+    category: "women",
+    tags: ["rabbit", "women", "dual"],
+    price: 74.99,
+    originalPrice: 94.99,
+    isSale: true,
+    isNew: false,
+    isBestseller: false,
+    rating: 4.6,
+    reviewCount: 243,
     description:
-      "Padded velvet cuffs with quick-release buckles and adjustable straps. Beginner-friendly and thoughtfully made for comfort over extended wear. Comes in a set of two with a satin storage pouch.",
-    price: 4200,
-    category: "For Two",
-    gradient: "linear-gradient(135deg, #2e1235 0%, #5a2d6b 60%, #e8c4b8 100%)",
-    materials: "Velvet outer, foam padding, vegan leather strap. Nickel-free hardware.",
-    dimensions: "Adjustable 14–22 cm wrist circumference",
-    chargingTime: "N/A",
-    features: [
-      "Quick-release safety buckle",
-      "D-ring attachment point",
-      "Machine-washable cover",
-      "Includes satin storage pouch",
-    ],
-    bodyNeutralNote: "For anyone who enjoys light restraint play, regardless of role.",
+      "Iconic dual-stimulation design with flexible arm. 12 combined vibration patterns for internal and external pleasure.",
+    features: ["Dual stimulation", "Flexible arm", "12 patterns", "Body-safe silicone", "Waterproof"],
+    gradient: "from-gray-800 to-gray-900",
   },
   {
     id: "5",
-    slug: "halo-kegel",
-    name: "Halo Kegel Trainer",
-    tagline: "Build pelvic floor strength, guided and at your pace.",
+    name: "Obsidian Ring Pro",
+    slug: "obsidian-ring-pro",
+    category: "men",
+    tags: ["ring", "men", "couples"],
+    price: 34.99,
+    isSale: false,
+    isNew: false,
+    isBestseller: true,
+    rating: 4.5,
+    reviewCount: 198,
     description:
-      "Halo is a smart pelvic floor trainer that guides you through progressive daily exercise sessions. Weighted modes help build strength over time; the companion app tracks progress discreetly. A clinical-grade tool for anyone with a pelvic floor.",
-    price: 7500,
-    category: "Wellness",
-    gradient: "linear-gradient(135deg, #faf6f1 0%, #e8c4b8 50%, #c0714f 100%)",
-    materials: "Medical-grade silicone. BPA-free. Body-safe.",
-    dimensions: "9 cm × 3.5 cm",
-    chargingTime: "60 min (USB-C)",
-    features: [
-      "Guided biofeedback sessions",
-      "Progressive resistance modes",
-      "Discreet companion app",
-      "Clinically validated design",
-    ],
-    bodyNeutralNote: "Suitable for anyone with a pelvic floor — post-partum, post-surgical, or preventative care.",
-    badge: "Wellness",
+      "Vibrating silicone ring for enhanced pleasure. Stretchy, body-safe, and waterproof. One-touch controls.",
+    features: ["Stretchy silicone", "One-touch control", "Waterproof", "USB-C charging", "Body-safe"],
+    gradient: "from-gray-700 to-slate-800",
   },
   {
     id: "6",
-    slug: "solace-balm",
-    name: "Solace Intimate Balm",
-    tagline: "Nourishing comfort for sensitive skin.",
+    name: "Storm Stroker",
+    slug: "storm-stroker",
+    category: "men",
+    tags: ["stroker", "men"],
+    price: 54.99,
+    isSale: false,
+    isNew: true,
+    isBestseller: false,
+    rating: 4.7,
+    reviewCount: 134,
     description:
-      "A fragrance-free, pH-balanced intimate moisturising balm formulated with shea butter, jojoba oil, and aloe vera. Soothes dryness and supports the skin barrier. Compatible with silicone, latex, and polyurethane barrier products.",
-    price: 2800,
-    category: "Wellness",
-    gradient: "linear-gradient(135deg, #fdf8f4 0%, #f0e8de 60%, #e8c4b8 100%)",
-    materials: "Shea butter, jojoba oil, aloe vera, vitamin E. Fragrance-free.",
-    dimensions: "50 ml",
-    chargingTime: "N/A",
-    features: [
-      "pH-balanced for intimate skin",
-      "Fragrance- and paraben-free",
-      "Compatible with most barrier products",
-      "Dermatologist tested",
-    ],
-    bodyNeutralNote: "For any body. Especially helpful for anyone experiencing dryness or sensitivity.",
+      "Ultra-realistic textured sleeve in premium TPE material. Discreet travel case included.",
+    features: ["Premium TPE", "Textured interior", "Travel case included", "Easy to clean", "Discreet design"],
+    gradient: "from-blue-900 to-indigo-900",
   },
   {
     id: "7",
-    slug: "aria-vibe",
-    name: "Aria",
-    tagline: "Your first, or your forever.",
+    name: "Apex P-Wand",
+    slug: "apex-p-wand",
+    category: "men",
+    tags: ["prostate", "men", "wand"],
+    price: 69.99,
+    originalPrice: 89.99,
+    isSale: true,
+    isNew: false,
+    isBestseller: false,
+    rating: 4.8,
+    reviewCount: 167,
     description:
-      "Aria is Lumen's signature introduction to vibration — smooth, quiet, and beginner-friendly without sacrificing power. Five broad settings and an elegant pebble form make it as comfortable to hold as it is to use.",
-    price: 5500,
-    category: "Solo",
-    gradient: "linear-gradient(135deg, #d4a8c7 0%, #9b59b6 60%, #5a2d6b 100%)",
-    materials: "Platinum silicone. ABS. Phthalate-free.",
-    dimensions: "12 cm × 4 cm",
-    chargingTime: "60 min (USB-C magnetic)",
-    features: [
-      "5 power settings",
-      "IPX7 waterproof",
-      "Pebble ergonomic form",
-      "Low-hum motor",
-    ],
-    bodyNeutralNote: "A great starting point for anyone curious about vibration.",
-    badge: "New",
+      "Ergonomically curved prostate massager with dual vibration motors. Hits the P-spot precisely every time.",
+    features: ["Dual motors", "Ergonomic curve", "10 patterns", "Waterproof IPX7", "Magnetic charge"],
+    gradient: "from-indigo-700 to-purple-800",
   },
   {
     id: "8",
-    slug: "lumen-lubricant",
-    name: "Lumen Glide",
-    tagline: "Water-based, long-lasting, body-kind.",
+    name: "Pride Harness Kit",
+    slug: "pride-harness-kit",
+    category: "lgbtq",
+    tags: ["harness", "lgbtq", "strap-on"],
+    price: 84.99,
+    isSale: false,
+    isNew: false,
+    isBestseller: true,
+    rating: 4.9,
+    reviewCount: 289,
     description:
-      "A pure water-based lubricant with a silky, non-sticky texture. Unflavoured, unscented, and free from glycerin, parabens, and artificial colour. Safe with all toy materials and barrier products.",
-    price: 1800,
-    category: "Accessories",
-    gradient: "linear-gradient(135deg, #f8f4f0 0%, #e0d8f0 60%, #b8a8d0 100%)",
-    materials: "Water, hydroxymethylcellulose, sodium benzoate. Glycerin-free.",
-    dimensions: "100 ml",
-    chargingTime: "N/A",
-    features: [
-      "Water-based, toy-safe",
-      "Glycerin- and paraben-free",
-      "Long-lasting formula",
-      "Fragrance-free",
-    ],
-    bodyNeutralNote: "Works for everyone. Period.",
+      "Fully adjustable vegan leather harness compatible with any O-ring dildo. Comes with a premium silicone dildo.",
+    features: ["Vegan leather", "Fully adjustable", "Universal O-ring", "Silicone dildo included", "Inclusive sizing"],
+    gradient: "from-red-400 via-yellow-300 to-pink-400",
+  },
+  {
+    id: "9",
+    name: "Rainbow Plug Set",
+    slug: "rainbow-plug-set",
+    category: "lgbtq",
+    tags: ["plug", "lgbtq", "set", "anal"],
+    price: 44.99,
+    isSale: false,
+    isNew: true,
+    isBestseller: false,
+    rating: 4.7,
+    reviewCount: 201,
+    description:
+      "Three graduated plugs in body-safe silicone with vibrant rainbow jewel bases. Perfect for beginners to advanced.",
+    features: ["3-piece set", "Graduated sizes", "Body-safe silicone", "Jewel base", "Easy clean"],
+    gradient: "from-pink-400 via-purple-400 to-blue-400",
+  },
+  {
+    id: "10",
+    name: "Duo Wave Couples Vibe",
+    slug: "duo-wave-couples-vibe",
+    category: "couples",
+    tags: ["couples", "wearable", "vibrator"],
+    price: 79.99,
+    originalPrice: 99.99,
+    isSale: true,
+    isNew: false,
+    isBestseller: true,
+    rating: 4.8,
+    reviewCount: 378,
+    description:
+      "Wearable vibrator for couples. Hands-free, app-controlled, with 10 vibration patterns. Stays in place.",
+    features: ["App-controlled", "Wearable", "Hands-free", "10 patterns", "Whisper-quiet"],
+    gradient: "from-rose-300 to-violet-300",
+  },
+  {
+    id: "11",
+    name: "Sensory Blindfold & Cuff Set",
+    slug: "sensory-blindfold-cuff-set",
+    category: "couples",
+    tags: ["couples", "bondage", "set"],
+    price: 39.99,
+    isSale: false,
+    isNew: false,
+    isBestseller: false,
+    rating: 4.6,
+    reviewCount: 154,
+    description:
+      "Velvet blindfold and adjustable wrist cuffs for beginners exploring sensory play. Safe and comfortable.",
+    features: ["Soft velvet", "Adjustable cuffs", "Quick-release", "Beginner-friendly", "Gift box"],
+    gradient: "from-gray-800 to-rose-900",
+  },
+  {
+    id: "12",
+    name: "Glow Dildo — Crystal Clear",
+    slug: "glow-dildo-crystal-clear",
+    category: "lgbtq",
+    tags: ["dildo", "lgbtq", "glass-alternative"],
+    price: 59.99,
+    isSale: false,
+    isNew: true,
+    isBestseller: false,
+    rating: 4.7,
+    reviewCount: 112,
+    description:
+      "Borosilicate-quality body-safe silicone dildo with realistic texture. Temperature-play compatible. Harness-compatible.",
+    features: ["Temperature play", "Harness-compatible", "Body-safe silicone", "Realistic texture", "Easy clean"],
+    gradient: "from-cyan-200 to-teal-300",
+  },
+  {
+    id: "13",
+    name: "Petal Clitoral Brush",
+    slug: "petal-clitoral-brush",
+    category: "women",
+    tags: ["women", "clitoral", "whisper-quiet"],
+    price: 42.99,
+    isSale: false,
+    isNew: false,
+    isBestseller: false,
+    rating: 4.5,
+    reviewCount: 97,
+    description:
+      "Ultra-soft brush tip with 7 whisper-quiet vibration settings. Perfect for sensitive stimulation.",
+    features: ["Soft brush tip", "7 settings", "Whisper-quiet", "Waterproof", "USB-C charge"],
+    gradient: "from-pink-100 to-rose-200",
+  },
+  {
+    id: "14",
+    name: "Men's Delay Spray",
+    slug: "mens-delay-spray",
+    category: "men",
+    tags: ["men", "spray", "wellness"],
+    price: 19.99,
+    isSale: false,
+    isNew: false,
+    isBestseller: false,
+    rating: 4.4,
+    reviewCount: 203,
+    description:
+      "Water-based, condom-compatible desensitising spray. Dermatologist tested, absorbed in 10 minutes.",
+    features: ["Water-based", "Condom-compatible", "Dermatologist tested", "Fast-absorbing", "60 sprays"],
+    gradient: "from-slate-600 to-slate-700",
+  },
+  {
+    id: "15",
+    name: "The Intimacy Card Game",
+    slug: "intimacy-card-game",
+    category: "couples",
+    tags: ["couples", "game", "connection"],
+    price: 24.99,
+    isSale: false,
+    isNew: true,
+    isBestseller: false,
+    rating: 4.9,
+    reviewCount: 445,
+    description:
+      "150 intimacy-building conversation and challenge cards. Perfect for date nights. Inclusive and shame-free.",
+    features: ["150 cards", "Inclusive", "All relationship types", "Gift-ready box", "Conversation starters"],
+    gradient: "from-amber-200 to-rose-200",
+  },
+  {
+    id: "16",
+    name: "Silicone Lube — 200ml",
+    slug: "silicone-lube-200ml",
+    category: "couples",
+    tags: ["lube", "couples", "essential"],
+    price: 16.99,
+    originalPrice: 21.99,
+    isSale: true,
+    isNew: false,
+    isBestseller: true,
+    rating: 4.8,
+    reviewCount: 589,
+    description:
+      "Long-lasting, ultra-smooth silicone lubricant. A little goes a long way. Not compatible with silicone toys.",
+    features: ["Long-lasting", "Condom-compatible", "Fragrance-free", "Dermatologist tested", "200ml pump bottle"],
+    gradient: "from-sky-200 to-blue-200",
+  },
+  {
+    id: "17",
+    name: "Arch G-Spot Vibe",
+    slug: "arch-g-spot-vibe",
+    category: "women",
+    tags: ["women", "g-spot", "vibrator"],
+    price: 55.99,
+    isSale: false,
+    isNew: false,
+    isBestseller: true,
+    rating: 4.8,
+    reviewCount: 267,
+    description:
+      "Precisely curved G-spot vibrator with rumbly deep motor. Flared base for safe use. 8 vibration modes.",
+    features: ["G-spot curve", "Deep rumbly motor", "8 modes", "Waterproof", "Body-safe silicone"],
+    gradient: "from-fuchsia-200 to-pink-300",
+  },
+  {
+    id: "18",
+    name: "Trans Pride Packers — Set of 3",
+    slug: "trans-pride-packers",
+    category: "lgbtq",
+    tags: ["lgbtq", "packer", "trans"],
+    price: 49.99,
+    isSale: false,
+    isNew: false,
+    isBestseller: false,
+    rating: 4.9,
+    reviewCount: 178,
+    description:
+      "Ultra-realistic soft-pack packers in three skin-tone options. Lightweight, skin-safe silicone blend.",
+    features: ["3 skin tones", "Lightweight", "Realistic feel", "Harness-compatible", "Skin-safe blend"],
+    gradient: "from-blue-200 via-pink-100 to-white",
+  },
+  {
+    id: "19",
+    name: "Pulse Prostate Massager",
+    slug: "pulse-prostate-massager",
+    category: "men",
+    tags: ["men", "prostate", "anal"],
+    price: 62.99,
+    originalPrice: 79.99,
+    isSale: true,
+    isNew: false,
+    isBestseller: false,
+    rating: 4.7,
+    reviewCount: 143,
+    description:
+      "Remote-controlled prostate massager with perineum arm. 12 patterns, whisper-quiet, waterproof.",
+    features: ["Remote control", "Perineum arm", "12 patterns", "Waterproof IPX6", "USB-C charging"],
+    gradient: "from-violet-700 to-indigo-800",
+  },
+  {
+    id: "20",
+    name: "Kegel Ball Set",
+    slug: "kegel-ball-set",
+    category: "women",
+    tags: ["women", "kegel", "wellness"],
+    price: 36.99,
+    isSale: false,
+    isNew: false,
+    isBestseller: false,
+    rating: 4.6,
+    reviewCount: 211,
+    description:
+      "Graduated kegel exercise balls for pelvic floor strengthening. Silicone coated, easy-retrieval cord.",
+    features: ["3 weight options", "Silicone coated", "Retrieval cord", "Discreet design", "Beginner-friendly"],
+    gradient: "from-rose-100 to-pink-200",
+  },
+  {
+    id: "21",
+    name: "Feather Tickler & Crop",
+    slug: "feather-tickler-crop",
+    category: "couples",
+    tags: ["couples", "sensory", "bondage"],
+    price: 28.99,
+    originalPrice: 35.99,
+    isSale: true,
+    isNew: false,
+    isBestseller: false,
+    rating: 4.4,
+    reviewCount: 88,
+    description:
+      "Elegant feather tickler with a mini crop on the reverse. Vegan-friendly materials, gift-ready.",
+    features: ["2-in-1 design", "Vegan feather", "Gift box", "Beginner BDSM", "Easy grip handle"],
+    gradient: "from-pink-200 to-red-200",
+  },
+  {
+    id: "22",
+    name: "Water-Based Lube — 100ml",
+    slug: "water-based-lube-100ml",
+    category: "couples",
+    tags: ["lube", "couples", "essential"],
+    price: 11.99,
+    isSale: false,
+    isNew: false,
+    isBestseller: true,
+    rating: 4.7,
+    reviewCount: 734,
+    description:
+      "Silicone-toy-safe water-based lubricant. Condom-compatible, natural feel, easy wash-off.",
+    features: ["Toy-safe", "Condom-compatible", "Natural feel", "Easy wash-off", "Fragrance-free"],
+    gradient: "from-teal-100 to-cyan-200",
+  },
+  {
+    id: "23",
+    name: "Queer Erotica Anthology",
+    slug: "queer-erotica-anthology",
+    category: "lgbtq",
+    tags: ["lgbtq", "book", "erotica"],
+    price: 14.99,
+    isSale: false,
+    isNew: true,
+    isBestseller: false,
+    rating: 4.8,
+    reviewCount: 56,
+    description:
+      "Curated short fiction celebrating queer pleasure, intimacy, and identity. Body-positive, joyful, and explicit.",
+    features: ["240 pages", "Multiple authors", "All identities", "Body-positive", "Inclusive representation"],
+    gradient: "from-purple-300 via-pink-200 to-yellow-200",
+  },
+  {
+    id: "24",
+    name: "Massage Candle — Vanilla",
+    slug: "massage-candle-vanilla",
+    category: "couples",
+    tags: ["couples", "massage", "romance"],
+    price: 22.99,
+    isSale: false,
+    isNew: false,
+    isBestseller: false,
+    rating: 4.6,
+    reviewCount: 167,
+    description:
+      "Soy-based massage candle that melts into warm body oil. Vanilla & sandalwood scent, skin-safe at low temp.",
+    features: ["Soy wax", "Skin-safe temp", "Massage oil", "Vanilla & sandalwood", "60 hour burn"],
+    gradient: "from-amber-100 to-orange-200",
   },
 ];
 
-// ── Helpers ─────────────────────────────────────────────────────────────────
+export function getProductsByCategory(category: Category): Product[] {
+  return products.filter((p) => p.category === category);
+}
+
+export function getSaleProducts(): Product[] {
+  return products.filter((p) => p.isSale);
+}
+
+export function getBestsellers(): Product[] {
+  return products.filter((p) => p.isBestseller);
+}
+
+export function getNewArrivals(): Product[] {
+  return products.filter((p) => p.isNew);
+}
 
 export function getProductBySlug(slug: string): Product | undefined {
-  return PRODUCTS.find((p) => p.slug === slug);
+  return products.find((p) => p.slug === slug);
 }
-
-export function getProductsByCategory(category: Category): Product[] {
-  return PRODUCTS.filter((p) => p.category === category);
-}
-
-export function getRelatedProducts(current: Product, count = 3): Product[] {
-  return PRODUCTS.filter(
-    (p) => p.category === current.category && p.id !== current.id
-  ).slice(0, count);
-}
-
-/** Format a price in pence to a GBP display string, e.g. 8900 → "£89.00" */
-export function formatPrice(pence: number): string {
-  return new Intl.NumberFormat("en-GB", {
-    style: "currency",
-    currency: "GBP",
-  }).format(pence / 100);
-}
-
-export const CATEGORIES: Category[] = ["Solo", "For Two", "Wellness", "Accessories"];

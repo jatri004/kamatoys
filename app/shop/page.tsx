@@ -1,67 +1,57 @@
-import type { Metadata } from "next";
-import { PRODUCTS, CATEGORIES } from "@/lib/products";
-import type { Category } from "@/lib/products";
-import ProductCard from "@/components/ProductCard";
-import CategoryFilter from "@/components/CategoryFilter";
-
-export const metadata: Metadata = {
-  title: "Shop",
-  description:
-    "Browse all Lumen intimate wellness products. Shop by experience — Solo, For Two, Wellness, and Accessories.",
-};
+import { products, getSaleProducts, getNewArrivals, getBestsellers } from "@/lib/products";
+import ProductGrid from "@/components/ProductGrid";
+import SectionHeader from "@/components/SectionHeader";
 
 interface Props {
-  searchParams: Promise<{ c?: string; sort?: string }>;
+  searchParams: Promise<{ q?: string; filter?: string; cat?: string }>;
 }
 
+export const metadata = { title: "Shop All Products" };
+
 export default async function ShopPage({ searchParams }: Props) {
-  const { c, sort: rawSort } = await searchParams;
-  const activeCategory = c as Category | undefined;
-  const sort = rawSort ?? "default";
+  const { q, filter, cat } = await searchParams;
 
-  let products = activeCategory
-    ? PRODUCTS.filter((p) => p.category === activeCategory)
-    : PRODUCTS;
+  let filtered = products;
+  let heading = "All Products";
+  let subtitle = `${products.length} products`;
 
-  if (sort === "price-asc") products = [...products].sort((a, b) => a.price - b.price);
-  if (sort === "price-desc") products = [...products].sort((a, b) => b.price - a.price);
+  if (q) {
+    const query = q.toLowerCase();
+    filtered = products.filter(
+      (p) =>
+        p.name.toLowerCase().includes(query) ||
+        p.tags.some((t) => t.toLowerCase().includes(query)) ||
+        p.description.toLowerCase().includes(query)
+    );
+    heading = `Search: "${q}"`;
+    subtitle = `${filtered.length} result${filtered.length !== 1 ? "s" : ""}`;
+  } else if (filter === "sale") {
+    filtered = getSaleProducts();
+    heading = "On Sale";
+    subtitle = `${filtered.length} products on sale`;
+  } else if (filter === "new") {
+    filtered = getNewArrivals();
+    heading = "New Arrivals";
+    subtitle = `${filtered.length} new products`;
+  } else if (filter === "bestseller") {
+    filtered = getBestsellers();
+    heading = "Bestsellers";
+    subtitle = `${filtered.length} top-rated products`;
+  } else if (cat) {
+    filtered = products.filter((p) => p.category === cat || p.tags.includes(cat));
+    heading = cat.charAt(0).toUpperCase() + cat.slice(1);
+    subtitle = `${filtered.length} products`;
+  }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      {/* Page header */}
-      <div className="mb-10">
-        <p className="text-xs tracking-[0.3em] uppercase text-clay font-semibold mb-2">
-          {activeCategory ?? "All products"}
-        </p>
-        <h1 className="font-display text-5xl text-plum">
-          {activeCategory ?? "Shop"}
-        </h1>
-        {!activeCategory && (
-          <p className="text-plum/60 mt-3 max-w-xl">
-            Everything we make is body-safe, body-neutral, and built to last.
-            Browse by experience below.
-          </p>
-        )}
-      </div>
-
-      {/* Filters + sort — client component handles ?c= */}
-      <CategoryFilter
-        categories={CATEGORIES}
-        active={activeCategory}
-        currentSort={sort}
-      />
-
-      {/* Grid */}
-      {products.length === 0 ? (
-        <p className="text-plum/50 py-16 text-center">
-          No products found in this category yet.
-        </p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-10">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <SectionHeader title={heading} subtitle={subtitle} />
+      {filtered.length === 0 ? (
+        <div className="text-center py-20 text-gray-400">
+          <p className="text-lg">No products found.</p>
         </div>
+      ) : (
+        <ProductGrid products={filtered} />
       )}
     </div>
   );

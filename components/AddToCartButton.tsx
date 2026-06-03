@@ -1,42 +1,39 @@
 "use client";
 
+import { useState } from "react";
+import { ShoppingBag, Check } from "lucide-react";
 import { useCart } from "@/lib/cart";
 import type { Product } from "@/lib/products";
-import { useState } from "react";
 
-interface Props {
-  product: Product;
-  compact?: boolean;
-}
-
-export default function AddToCartButton({ product, compact = false }: Props) {
-  const { addItem } = useCart();
+export default function AddToCartButton({ product }: { product: Product }) {
+  const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
 
-  function handleAdd() {
-    addItem(product);
+  const handleAdd = () => {
+    addToCart(product);
     setAdded(true);
-    setTimeout(() => setAdded(false), 1400);
-  }
-
-  if (compact) {
-    return (
-      <button
-        onClick={handleAdd}
-        aria-label={`Add ${product.name} to bag`}
-        className="flex-shrink-0 bg-plum text-cream text-xs font-semibold px-3.5 py-2 rounded-xl hover:bg-plum-light active:scale-95 transition-all focus-visible:ring-2 focus-visible:ring-clay focus-visible:ring-offset-2"
-      >
-        {added ? "Added ✓" : "Add"}
-      </button>
-    );
-  }
+    setTimeout(() => setAdded(false), 2000);
+  };
 
   return (
     <button
       onClick={handleAdd}
-      className="w-full bg-plum text-cream font-semibold text-sm py-4 rounded-2xl hover:bg-plum-light active:scale-[0.98] transition-all focus-visible:ring-2 focus-visible:ring-clay focus-visible:ring-offset-2"
+      className={`flex-1 flex items-center justify-center gap-2 font-semibold py-3.5 rounded-xl transition-all ${
+        added
+          ? "bg-green-600 text-white"
+          : "bg-black text-white hover:bg-gray-800"
+      }`}
+      aria-label={`Add ${product.name} to bag`}
     >
-      {added ? "Added to bag ✓" : "Add to bag"}
+      {added ? (
+        <>
+          <Check size={18} /> Added to Bag
+        </>
+      ) : (
+        <>
+          <ShoppingBag size={18} /> Add to Bag
+        </>
+      )}
     </button>
   );
 }

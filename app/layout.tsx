@@ -1,46 +1,22 @@
 import type { Metadata } from "next";
-import { Fraunces, Manrope } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart";
+import { WishlistProvider } from "@/lib/wishlist";
+import AnnouncementBar from "@/components/AnnouncementBar";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import AgeGate from "@/components/AgeGate";
-import CartDrawer from "@/components/CartDrawer";
-
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-fraunces",
-  display: "swap",
-  // Include optical-size axis for beautiful large display use
-  axes: ["opsz"],
-});
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-manrope",
-  display: "swap",
-});
+import AgeVerification from "@/components/AgeVerification";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Lumen",
-    default: "Lumen — Intimate Wellness",
+    default: "KamaToys — Premium Intimate Wellness",
+    template: "%s | KamaToys",
   },
   description:
-    "Lumen is a premium intimate-wellness brand offering body-safe products for everyone. Discreet shipping. Plain packaging. Designed for all bodies.",
-  keywords: ["intimate wellness", "body-safe", "personal massager", "adult", "sex toy"],
-  robots: {
-    index: true,
-    follow: true,
-  },
-  // Mark site as adult content for search engines / safe-search filters
-  other: {
-    rating: "adult",
-    "DC.audience": "adults",
-  },
+    "KamaToys — the UK's most inclusive adult wellness boutique. Free discreet delivery, premium products, and expert guides.",
+  metadataBase: new URL("https://kamatoys.com"),
   openGraph: {
-    title: "Lumen — Intimate Wellness",
-    description: "Premium intimate wellness, for every body.",
+    siteName: "KamaToys",
     type: "website",
   },
 };
@@ -51,17 +27,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${fraunces.variable} ${manrope.variable}`}
-    >
-      <body className="flex flex-col min-h-screen">
+    <html lang="en">
+      <body>
         <CartProvider>
-          <AgeGate />
-          <Navbar />
-          <CartDrawer />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <WishlistProvider>
+            <AgeVerification />
+            <AnnouncementBar />
+            <Navbar />
+            <main id="main-content">{children}</main>
+            <Footer />
+          </WishlistProvider>
         </CartProvider>
       </body>
     </html>

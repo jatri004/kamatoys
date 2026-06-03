@@ -1,199 +1,150 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef } from "react";
+import Link from "next/link";
+import { X, Plus, Minus, ShoppingBag } from "lucide-react";
 import { useCart } from "@/lib/cart";
-import { formatPrice } from "@/lib/products";
 
-export default function CartDrawer() {
-  const { items, isOpen, closeCart, removeItem, setQuantity, subtotal, itemCount } =
-    useCart();
+interface Props {
+  open: boolean;
+  onClose: () => void;
+}
 
-  // Trap focus and handle Escape key
-  const drawerRef = useRef<HTMLDivElement>(null);
+export default function CartDrawer({ open, onClose }: Props) {
+  const { items, removeFromCart, increment, decrement, totalPrice } = useCart();
+  const overlayRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (!isOpen) return;
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeCart();
+      if (e.key === "Escape") onClose();
     };
-    document.addEventListener("keydown", handler);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", handler);
-      document.body.style.overflow = "";
-    };
-  }, [isOpen, closeCart]);
+    if (open) document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [open, onClose]);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
+  if (!open) return null;
 
   return (
-    <>
+    <div className="fixed inset-0 z-[100]">
       {/* Overlay */}
       <div
-        className="fixed inset-0 z-40 cart-overlay"
-        onClick={closeCart}
+        ref={overlayRef}
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Drawer panel */}
-      <div
-        ref={drawerRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Shopping bag"
-        className="fixed right-0 top-0 h-full w-full max-w-md z-50 bg-cream shadow-2xl flex flex-col animate-slide-in"
+      {/* Drawer */}
+      <aside
+        className="absolute right-0 top-0 h-full w-full max-w-sm bg-white shadow-2xl flex flex-col animate-slide-in"
+        aria-label="Shopping cart"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-plum/10">
-          <h2 className="font-display text-xl text-plum">
-            Your Bag
-            {itemCount > 0 && (
-              <span className="ml-2 text-sm font-sans text-plum/50">
-                ({itemCount} item{itemCount !== 1 ? "s" : ""})
-              </span>
-            )}
-          </h2>
+        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+          <h2 className="text-lg font-display font-bold">Your Bag</h2>
           <button
-            onClick={closeCart}
-            className="p-2 rounded-xl hover:bg-plum/5 text-plum transition-colors"
-            aria-label="Close bag"
+            onClick={onClose}
+            className="p-1.5 text-gray-500 hover:text-black rounded-md"
+            aria-label="Close cart"
           >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              aria-hidden="true"
-            >
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
+            <X size={20} />
           </button>
         </div>
 
         {/* Items */}
-        <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+        <div className="flex-1 overflow-y-auto px-5 py-4">
           {items.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full gap-4 text-center text-plum/50">
-              <svg
-                width="48"
-                height="48"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                aria-hidden="true"
+            <div className="flex flex-col items-center justify-center h-full text-center gap-4">
+              <ShoppingBag size={48} className="text-gray-200" />
+              <p className="text-gray-500 text-sm">Your bag is empty</p>
+              <Link
+                href="/shop"
+                onClick={onClose}
+                className="text-sm font-medium text-blush-500 hover:underline"
               >
-                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <path d="M16 10a4 4 0 0 1-8 0" />
-              </svg>
-              <p className="font-display text-lg">Your bag is empty</p>
-              <button
-                onClick={closeCart}
-                className="text-sm underline underline-offset-2 hover:text-clay transition-colors"
-              >
-                Continue browsing
-              </button>
+                Continue Shopping
+              </Link>
             </div>
           ) : (
-            items.map((item) => (
-              <div
-                key={item.product.id}
-                className="flex gap-4 py-4 border-b border-plum/8 last:border-0"
-              >
-                {/* Product colour swatch */}
-                <div
-                  className="w-16 h-16 rounded-2xl flex-shrink-0"
-                  style={{ background: item.product.gradient }}
-                  aria-hidden="true"
-                />
-
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <p className="font-display text-plum font-medium leading-snug truncate">
-                    {item.product.name}
-                  </p>
-                  <p className="text-xs text-plum/50 mt-0.5">
-                    {formatPrice(item.product.price)} each
-                  </p>
-
-                  {/* Qty controls */}
-                  <div className="flex items-center gap-2 mt-2">
-                    <button
-                      onClick={() =>
-                        setQuantity(item.product.id, item.quantity - 1)
-                      }
-                      aria-label={`Decrease quantity of ${item.product.name}`}
-                      className="w-7 h-7 rounded-lg border border-plum/20 flex items-center justify-center text-plum hover:bg-plum/5 transition-colors text-sm"
-                    >
-                      −
-                    </button>
-                    <span
-                      className="w-6 text-center text-sm font-medium text-plum"
-                      aria-live="polite"
-                      aria-label={`Quantity: ${item.quantity}`}
-                    >
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={() =>
-                        setQuantity(item.product.id, item.quantity + 1)
-                      }
-                      aria-label={`Increase quantity of ${item.product.name}`}
-                      className="w-7 h-7 rounded-lg border border-plum/20 flex items-center justify-center text-plum hover:bg-plum/5 transition-colors text-sm"
-                    >
-                      +
-                    </button>
+            <ul className="space-y-4">
+              {items.map(({ product, quantity }) => (
+                <li
+                  key={product.id}
+                  className="flex gap-3 py-3 border-b border-gray-50"
+                >
+                  {/* Placeholder image */}
+                  <div
+                    className={`w-16 h-16 rounded-lg bg-gradient-to-br ${product.gradient} flex-shrink-0`}
+                    aria-hidden="true"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 leading-snug line-clamp-2">
+                      {product.name}
+                    </p>
+                    <p className="text-sm font-bold text-gray-900 mt-1">
+                      £{(product.price * quantity).toFixed(2)}
+                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <button
+                        onClick={() => decrement(product.id)}
+                        className="w-6 h-6 rounded-full border border-gray-200 flex items-center justify-center hover:border-gray-400"
+                        aria-label="Decrease quantity"
+                      >
+                        <Minus size={12} />
+                      </button>
+                      <span className="text-sm w-6 text-center">{quantity}</span>
+                      <button
+                        onClick={() => increment(product.id)}
+                        className="w-6 h-6 rounded-full border border-gray-200 flex items-center justify-center hover:border-gray-400"
+                        aria-label="Increase quantity"
+                      >
+                        <Plus size={12} />
+                      </button>
+                      <button
+                        onClick={() => removeFromCart(product.id)}
+                        className="ml-auto text-xs text-gray-400 hover:text-red-500"
+                        aria-label={`Remove ${product.name}`}
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
-                </div>
-
-                {/* Line total + remove */}
-                <div className="flex flex-col items-end gap-2">
-                  <p className="text-sm font-semibold text-plum">
-                    {formatPrice(item.product.price * item.quantity)}
-                  </p>
-                  <button
-                    onClick={() => removeItem(item.product.id)}
-                    aria-label={`Remove ${item.product.name} from bag`}
-                    className="text-xs text-plum/40 hover:text-clay transition-colors"
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            ))
+                </li>
+              ))}
+            </ul>
           )}
         </div>
 
-        {/* Footer totals + CTA */}
+        {/* Footer */}
         {items.length > 0 && (
-          <div className="px-6 py-5 border-t border-plum/10 space-y-3">
-            <div className="flex justify-between text-sm text-plum/70">
-              <span>Subtotal</span>
-              <span className="font-semibold text-plum">{subtotal}</span>
+          <div className="px-5 py-5 border-t border-gray-100 space-y-3">
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-600">Subtotal</span>
+              <span className="font-bold text-gray-900">£{totalPrice.toFixed(2)}</span>
             </div>
-            <p className="text-xs text-plum/40">
-              Shipping calculated at checkout. Discreet billing.
-            </p>
+            <p className="text-xs text-gray-400">Shipping calculated at checkout</p>
             <Link
               href="/checkout"
-              onClick={closeCart}
-              className="block w-full bg-plum text-cream text-center font-semibold text-sm py-4 rounded-2xl hover:bg-plum-light transition-colors focus-visible:ring-2 focus-visible:ring-clay focus-visible:ring-offset-2"
+              onClick={onClose}
+              className="block w-full bg-black text-white text-sm font-semibold text-center py-3.5 rounded-lg hover:bg-gray-800"
             >
-              Checkout — {subtotal}
+              Checkout — £{totalPrice.toFixed(2)}
             </Link>
-            <button
-              onClick={closeCart}
-              className="block w-full text-center text-sm text-plum/50 hover:text-plum py-2 transition-colors"
+            <Link
+              href="/cart"
+              onClick={onClose}
+              className="block w-full border border-gray-200 text-gray-700 text-sm font-medium text-center py-3 rounded-lg hover:bg-gray-50"
             >
-              Continue shopping
-            </button>
+              View Full Cart
+            </Link>
           </div>
         )}
-      </div>
-    </>
+      </aside>
+    </div>
   );
 }

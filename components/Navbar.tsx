@@ -1,136 +1,264 @@
 "use client";
 
 import Link from "next/link";
-import { useCart } from "@/lib/cart";
 import { useState } from "react";
+import {
+  ShoppingBag,
+  Heart,
+  User,
+  Search,
+  Menu,
+  X,
+  ChevronDown,
+} from "lucide-react";
+import { useCart } from "@/lib/cart";
+import { useWishlist } from "@/lib/wishlist";
+import CartDrawer from "./CartDrawer";
+
+const navLinks = [
+  {
+    label: "Shop",
+    href: "/shop",
+    dropdown: [
+      { label: "Women", href: "/women" },
+      { label: "Men", href: "/men" },
+      { label: "LGBTQ+", href: "/lgbtq" },
+      { label: "Couples", href: "/shop?cat=couples" },
+      { label: "Sale", href: "/sale" },
+      { label: "New Arrivals", href: "/shop?filter=new" },
+    ],
+  },
+  { label: "Women", href: "/women" },
+  { label: "Men", href: "/men" },
+  { label: "LGBTQ+", href: "/lgbtq" },
+  { label: "Sale", href: "/sale" },
+  { label: "Gift Cards", href: "/gift-cards" },
+  { label: "Education", href: "/education" },
+  { label: "Contact Us", href: "/contact" },
+];
 
 export default function Navbar() {
-  const { itemCount, openCart } = useCart();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const { totalItems } = useCart();
+  const { items: wishlistItems } = useWishlist();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [shopOpen, setShopOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const links = [
-    { href: "/shop", label: "Shop" },
-    { href: "/about", label: "Our Story" },
-    { href: "/faq", label: "FAQ" },
-  ];
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      window.location.href = `/shop?q=${encodeURIComponent(searchQuery.trim())}`;
+    }
+  };
 
   return (
-    <header className="sticky top-0 z-50 bg-cream/90 backdrop-blur-md border-b border-plum/8">
-      <nav
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
-        aria-label="Main navigation"
-      >
-        {/* Logo */}
-        <Link
-          href="/"
-          className="font-display text-xl tracking-[0.25em] text-plum hover:text-clay transition-colors"
-          aria-label="Lumen — go to homepage"
-        >
-          LUMEN
-        </Link>
+    <>
+      {/* Sticky header wrapper */}
+      <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+        {/* Main header row */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-4 h-16">
+            {/* Logo */}
+            <Link
+              href="/"
+              className="flex-shrink-0 text-xl font-display font-bold tracking-tight text-black"
+              aria-label="KamaToys home"
+            >
+              Kama<span className="text-blush-500">Toys</span>
+            </Link>
 
-        {/* Desktop nav links */}
-        <ul className="hidden md:flex gap-8 list-none m-0 p-0">
-          {links.map((l) => (
-            <li key={l.href}>
+            {/* Search — desktop */}
+            <form
+              onSubmit={handleSearch}
+              className="hidden md:flex flex-1 max-w-xl mx-auto relative"
+            >
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search products..."
+                className="w-full border border-gray-200 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:border-blush-400 focus:ring-2 focus:ring-blush-100"
+                aria-label="Search products"
+              />
+              <button
+                type="submit"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blush-500"
+                aria-label="Submit search"
+              >
+                <Search size={16} />
+              </button>
+            </form>
+
+            {/* Right icons */}
+            <div className="flex items-center gap-1 ml-auto md:ml-0">
               <Link
-                href={l.href}
-                className="text-sm font-sans font-medium text-plum/70 hover:text-plum transition-colors"
+                href="/account"
+                className="p-2 text-gray-600 hover:text-blush-500 hidden sm:flex items-center"
+                aria-label="Account"
               >
-                {l.label}
+                <User size={20} />
               </Link>
-            </li>
-          ))}
-        </ul>
 
-        {/* Right actions */}
-        <div className="flex items-center gap-3">
-          {/* Cart button */}
-          <button
-            onClick={openCart}
-            aria-label={`Open bag — ${itemCount} item${itemCount !== 1 ? "s" : ""}`}
-            className="relative flex items-center gap-1.5 text-sm font-medium text-plum hover:text-clay transition-colors px-3 py-2 rounded-xl hover:bg-plum/5"
-          >
-            {/* Bag icon (inline SVG — no external dep needed) */}
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              aria-hidden="true"
-            >
-              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <path d="M16 10a4 4 0 0 1-8 0" />
-            </svg>
-            <span className="hidden sm:inline">Bag</span>
-            {itemCount > 0 && (
-              <span
-                className="absolute -top-1 -right-1 bg-clay text-cream text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center"
-                aria-hidden="true"
+              <Link
+                href="/wishlist"
+                className="p-2 text-gray-600 hover:text-blush-500 relative"
+                aria-label={`Wishlist (${wishlistItems.length} items)`}
               >
-                {itemCount > 9 ? "9+" : itemCount}
-              </span>
-            )}
-          </button>
+                <Heart size={20} />
+                {wishlistItems.length > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 bg-blush-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                    {wishlistItems.length}
+                  </span>
+                )}
+              </Link>
 
-          {/* Mobile hamburger */}
-          <button
-            className="md:hidden p-2 rounded-xl hover:bg-plum/5 text-plum"
-            onClick={() => setMenuOpen((v) => !v)}
-            aria-expanded={menuOpen}
-            aria-controls="mobile-menu"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
+              <button
+                onClick={() => setCartOpen(true)}
+                className="p-2 text-gray-600 hover:text-blush-500 relative"
+                aria-label={`Cart (${totalItems} items)`}
+              >
+                <ShoppingBag size={20} />
+                {totalItems > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                    {totalItems}
+                  </span>
+                )}
+              </button>
+
+              {/* Mobile menu toggle */}
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className="p-2 text-gray-600 hover:text-black md:hidden"
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              >
+                {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile search */}
+          <form
+            onSubmit={handleSearch}
+            className="md:hidden pb-3 relative"
           >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              aria-hidden="true"
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search products..."
+              className="w-full border border-gray-200 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:border-blush-400"
+              aria-label="Search products"
+            />
+            <button
+              type="submit"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+              aria-label="Submit search"
             >
-              {menuOpen ? (
-                <>
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </>
-              ) : (
-                <>
-                  <line x1="3" y1="12" x2="21" y2="12" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <line x1="3" y1="18" x2="21" y2="18" />
-                </>
-              )}
-            </svg>
-          </button>
+              <Search size={16} />
+            </button>
+          </form>
         </div>
-      </nav>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div
-          id="mobile-menu"
-          className="md:hidden border-t border-plum/8 bg-cream px-4 py-4 animate-fade-in"
+        {/* Desktop nav strip */}
+        <nav
+          className="hidden md:block border-t border-gray-100"
+          aria-label="Main navigation"
         >
-          <ul className="flex flex-col gap-4 list-none m-0 p-0">
-            {links.map((l) => (
-              <li key={l.href}>
-                <Link
-                  href={l.href}
-                  className="block text-base font-medium text-plum py-1"
-                  onClick={() => setMenuOpen(false)}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <ul className="flex items-center gap-0">
+              {navLinks.map((link) => (
+                <li
+                  key={link.label}
+                  className="relative group"
+                  onMouseEnter={() => link.dropdown && setShopOpen(true)}
+                  onMouseLeave={() => link.dropdown && setShopOpen(false)}
                 >
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </header>
+                  {link.label === "Sale" ? (
+                    <Link
+                      href={link.href}
+                      className="flex items-center gap-1 px-4 py-3 text-sm font-semibold text-red-600 hover:text-red-700"
+                    >
+                      {link.label}
+                    </Link>
+                  ) : link.label === "LGBTQ+" ? (
+                    <Link
+                      href={link.href}
+                      className="flex items-center gap-1 px-4 py-3 text-sm font-medium rainbow-text hover:opacity-80"
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="flex items-center gap-1 px-4 py-3 text-sm font-medium text-gray-700 hover:text-black"
+                    >
+                      {link.label}
+                      {link.dropdown && <ChevronDown size={14} className="mt-0.5" />}
+                    </Link>
+                  )}
+
+                  {/* Dropdown */}
+                  {link.dropdown && (
+                    <div className="absolute top-full left-0 mt-0 w-44 bg-white border border-gray-100 shadow-lg rounded-b-lg rounded-tr-lg z-50 hidden group-hover:block">
+                      {link.dropdown.map((sub) => (
+                        <Link
+                          key={sub.label}
+                          href={sub.href}
+                          className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-blush-500 first:rounded-tr-lg last:rounded-b-lg"
+                        >
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
+
+        {/* Mobile nav drawer */}
+        {mobileOpen && (
+          <div className="md:hidden border-t border-gray-100 bg-white">
+            <nav aria-label="Mobile navigation">
+              {navLinks.map((link) => (
+                <div key={link.label}>
+                  <Link
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`block px-6 py-3 text-sm font-medium border-b border-gray-50 ${
+                      link.label === "Sale"
+                        ? "text-red-600"
+                        : link.label === "LGBTQ+"
+                        ? "rainbow-text"
+                        : "text-gray-800"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                  {link.dropdown && (
+                    <div className="bg-gray-50">
+                      {link.dropdown.map((sub) => (
+                        <Link
+                          key={sub.label}
+                          href={sub.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="block px-10 py-2.5 text-sm text-gray-600 border-b border-gray-100 hover:text-blush-500"
+                        >
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </nav>
+          </div>
+        )}
+      </header>
+
+      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
+    </>
   );
 }

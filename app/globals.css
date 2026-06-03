@@ -2,68 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Brand design tokens ── */
-:root {
-  --color-cream:       #faf6f1;
-  --color-cream-dark:  #f0e8de;
-  --color-plum:        #2e1235;
-  --color-plum-light:  #5a2d6b;
-  --color-clay:        #c0714f;
-  --color-blush:       #e8c4b8;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
-  --font-fraunces: "Fraunces", Georgia, serif;
-  --font-manrope:  "Manrope", system-ui, sans-serif;
+:root {
+  --font-inter: 'Inter', system-ui, sans-serif;
+  --font-playfair: 'Playfair Display', Georgia, serif;
 }
 
-/* ── Base resets ── */
-*,
-*::before,
-*::after {
+* {
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
-  background-color: var(--color-cream);
-  color: var(--color-plum);
-  font-family: var(--font-manrope);
-  font-size: 1rem;
-  line-height: 1.65;
-  /* Subtle noise-grain texture to add warmth */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  font-family: var(--font-inter);
+  color: #111;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ── Typography helpers ── */
-.font-display { font-family: var(--font-fraunces); }
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-fraunces);
-  line-height: 1.15;
+h1, h2, h3 {
+  font-family: var(--font-playfair);
 }
 
-/* ── Focus ring ── */
-:focus-visible {
-  outline: 2px solid var(--color-clay);
-  outline-offset: 3px;
-}
-
-/* ── Scrollbar (Webkit) ── */
+/* Custom scrollbar */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--color-cream); }
-::-webkit-scrollbar-thumb { background: var(--color-blush); border-radius: 99px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
 
-/* ── Utility: animation delay helpers ── */
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
-.delay-400 { animation-delay: 400ms; }
-.delay-500 { animation-delay: 500ms; }
+/* Rainbow gradient utility */
+.rainbow-gradient {
+  background: linear-gradient(90deg, #FF6B6B, #FFE66D, #6BCB77, #4D96FF, #C77DFF, #FF6B6B);
+}
 
-/* ── Cart drawer overlay ── */
-.cart-overlay {
-  background: rgba(46, 18, 53, 0.45);
-  backdrop-filter: blur(2px);
+.rainbow-text {
+  background: linear-gradient(90deg, #FF6B6B, #C77DFF, #4D96FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Announcement bar */
+.announcement-bar {
+  background: #111;
+  color: #fff;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Product card hover */
+.product-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid #f43f72;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Smooth transitions */
+a, button {
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
 }
