@@ -241,7 +241,7 @@ export default function HomePage() {
             Get 10% off your first order
           </h2>
           <p className="text-gray-600 mb-8">
-            Join the KamaDesires community for exclusive offers, new arrivals, and expert wellness advice — straight to your inbox.
+            Join the KamaDesires.com community for exclusive offers, new arrivals, and expert wellness advice — straight to your inbox.
           </p>
           <div className="max-w-md mx-auto">
             <NewsletterForm />

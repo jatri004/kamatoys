@@ -54,8 +54,8 @@ export default function DeliveryPage() {
 
       <div className="prose prose-sm text-gray-600 space-y-4">
         <h2 className="text-lg font-display font-bold text-gray-900">Discreet Packaging Promise</h2>
-        <p>Every KamaDesires order is shipped in a plain, unmarked cardboard box or padded envelope. The sender name on the parcel reads "KD Retail Ltd." — no mention of KamaDesires or any indication of contents.</p>
-        <p>Your bank or card statement will show "KT RETAIL LTD" as the merchant name.</p>
+        <p>Every KamaDesires.com order is shipped in a plain, unmarked cardboard box or padded envelope. The sender name on the parcel reads "KD Retail" — no mention of KamaDesires.com or any indication of contents.</p>
+        <p>Your bank or card statement will show "KD RETAIL" as the merchant name.</p>
 
         <h2 className="text-lg font-display font-bold text-gray-900 mt-6">Order Cut-off Times</h2>
         <p>Orders placed before <strong>2pm GMT</strong> on a working day are dispatched the same day. Orders placed after 2pm or on weekends are dispatched the next working day.</p>

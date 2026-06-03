@@ -9,14 +9,14 @@ import AgeVerification from "@/components/AgeVerification";
 
 export const metadata: Metadata = {
   title: {
-    default: "KamaDesires — Premium Intimate Wellness",
-    template: "%s | KamaDesires",
+    default: "KamaDesires.com — Premium Intimate Wellness",
+    template: "%s | KamaDesires.com",
   },
   description:
-    "KamaDesires — the UK's most inclusive adult wellness boutique. Free discreet delivery, premium products, and expert guides.",
+    "KamaDesires.com — the UK's most inclusive adult wellness boutique. Free discreet delivery, premium products, and expert guides.",
   metadataBase: new URL("https://kamadesires.com"),
   openGraph: {
-    siteName: "KamaDesires",
+    siteName: "KamaDesires.com",
     type: "website",
   },
 };
