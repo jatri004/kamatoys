@@ -1,5 +1,5 @@
 import { getProductsByCategory } from "@/lib/products";
-import ProductGrid from "@/components/ProductGrid";
+import FilterableProductGrid from "@/components/FilterableProductGrid";
 import SectionHeader from "@/components/SectionHeader";
 import ShopByType from "@/components/ShopByType";
 
@@ -48,8 +48,8 @@ export default function LGBTQPage() {
       <ShopByType types={lgbtqTypes} id="lgbtq-types-heading" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <SectionHeader title="LGBTQ+ Collection" subtitle={`${products.length} products`} rainbow />
-        <ProductGrid products={products} />
+        <SectionHeader title="LGBTQ+ Collection" rainbow />
+        <FilterableProductGrid products={products} />
       </div>
     </div>
   );

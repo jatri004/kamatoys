@@ -1,5 +1,5 @@
 import { products } from "@/lib/products";
-import ProductGrid from "@/components/ProductGrid";
+import FilterableProductGrid from "@/components/FilterableProductGrid";
 import SectionHeader from "@/components/SectionHeader";
 import ShopByType from "@/components/ShopByType";
 
@@ -44,8 +44,8 @@ export default function CouplesPage() {
       <ShopByType types={couplesTypes} id="couples-types-heading" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <SectionHeader title="Couples' Collection" subtitle={`${couplesProducts.length} products`} />
-        <ProductGrid products={couplesProducts} />
+        <SectionHeader title="Couples' Collection" />
+        <FilterableProductGrid products={couplesProducts} />
       </div>
     </div>
   );

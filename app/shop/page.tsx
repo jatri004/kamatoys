@@ -1,5 +1,5 @@
 import { products, getSaleProducts, getNewArrivals, getBestsellers } from "@/lib/products";
-import ProductGrid from "@/components/ProductGrid";
+import FilterableProductGrid from "@/components/FilterableProductGrid";
 import SectionHeader from "@/components/SectionHeader";
 
 interface Props {
@@ -51,7 +51,7 @@ export default async function ShopPage({ searchParams }: Props) {
           <p className="text-lg">No products found.</p>
         </div>
       ) : (
-        <ProductGrid products={filtered} />
+        <FilterableProductGrid products={filtered} />
       )}
     </div>
   );

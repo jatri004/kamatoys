@@ -16,9 +16,14 @@ export interface Product {
   description: string;
   features: string[];
   gradient: string;
+  // Facet attributes (used by the shop filters)
+  brand?: string;
+  color?: string;
+  material?: string;
+  flavour?: string;
 }
 
-export const products: Product[] = [
+const rawProducts: Product[] = [
   {
     id: "1",
     name: "Rose Quartz Wand",
@@ -711,6 +716,58 @@ export const products: Product[] = [
     gradient: "from-zinc-700 to-zinc-900",
   },
 ];
+
+// --- Facet enrichment -------------------------------------------------------
+// The placeholder catalogue doesn't carry real spec sheets, so we derive
+// sensible brand / colour / material / flavour values deterministically.
+// This gives the shop filters real, consistent data to work with.
+
+const BRANDS = ["Lumi", "Velvet & Co.", "Noir Atelier", "Aurora", "Pulse Labs", "Bloom"];
+
+function colorFromGradient(g: string): string {
+  if (/gray-8|gray-9|slate-8|zinc-7|zinc-9|black/.test(g)) return "Black";
+  if (/violet|purple|indigo|lilac/.test(g)) return "Purple";
+  if (/cyan|sky|teal|blue|emerald/.test(g)) return "Blue";
+  if (/amber|yellow|gold|orange/.test(g)) return "Gold";
+  if (/red|wine|rose-9/.test(g)) return "Red";
+  if (/fuchsia|pink|rose|blush/.test(g)) return "Pink";
+  return "Nude";
+}
+
+function materialFor(p: Product): string {
+  const t = p.tags;
+  const n = p.name.toLowerCase();
+  if (t.includes("clothing")) {
+    if (n.includes("lace")) return "Lace";
+    if (n.includes("satin")) return "Satin";
+    if (n.includes("mesh")) return "Mesh";
+    return "Lace";
+  }
+  if (t.includes("condoms")) return n.includes("vegan") ? "Vegan Latex" : "Latex";
+  if (t.includes("lube")) return n.includes("silicone") ? "Silicone-based" : n.includes("hybrid") ? "Hybrid" : "Water-based";
+  if (n.includes("glass")) return "Glass";
+  if (t.includes("ring") || n.includes("metal")) return "Body-safe Silicone";
+  return "Body-safe Silicone";
+}
+
+function flavourFor(p: Product): string | undefined {
+  if (!p.tags.includes("lube") && !p.tags.includes("condoms")) return undefined;
+  const idNum = parseInt(p.id, 10);
+  return ["Unflavoured", "Strawberry", "Vanilla", "Unflavoured"][idNum % 4];
+}
+
+function enrich(p: Product): Product {
+  const idNum = parseInt(p.id, 10) || 0;
+  return {
+    ...p,
+    brand: p.brand ?? BRANDS[idNum % BRANDS.length],
+    color: p.color ?? colorFromGradient(p.gradient),
+    material: p.material ?? materialFor(p),
+    flavour: p.flavour ?? flavourFor(p),
+  };
+}
+
+export const products: Product[] = rawProducts.map(enrich);
 
 export function getProductsByCategory(category: Category): Product[] {
   return products.filter((p) => p.category === category);
