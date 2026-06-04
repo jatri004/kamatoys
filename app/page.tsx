@@ -128,37 +128,37 @@ export default function HomePage() {
     <>
       {/* Hero */}
       <section
-        className="relative overflow-hidden bg-black text-white"
+        className="relative overflow-hidden bg-wine-900 text-white"
         aria-label="Hero banner"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black" />
-        {/* Decorative blush blob */}
-        <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-blush-500/20 blur-3xl" />
-        <div className="absolute -bottom-20 left-1/4 w-64 h-64 rounded-full bg-lilac-400/20 blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-wine-800 via-wine-900 to-wine-950" />
+        {/* Decorative gold glow */}
+        <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-gold-400/15 blur-3xl" />
+        <div className="absolute -bottom-20 left-1/4 w-64 h-64 rounded-full bg-wine-400/20 blur-3xl" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-36">
           <div className="max-w-xl">
-            <p className="text-blush-400 text-sm font-semibold uppercase tracking-widest mb-3">
+            <p className="text-gold-400 text-sm font-semibold uppercase tracking-widest mb-3">
               Inclusive · Discreet · Premium
             </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6">
               Pleasure,{" "}
-              <span className="text-blush-400">beautifully</span> designed.
+              <span className="gold-text">beautifully</span> designed.
             </h1>
-            <p className="text-gray-300 text-lg mb-8 leading-relaxed">
+            <p className="text-wine-100/80 text-lg mb-8 leading-relaxed">
               Premium intimate wellness for every body. Free discreet UK delivery.
               Expert guides. Always shame-free.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/shop"
-                className="inline-flex items-center gap-2 bg-blush-500 text-white font-semibold px-6 py-3.5 rounded-full hover:bg-blush-600"
+                className="inline-flex items-center gap-2 bg-gold-500 text-wine-900 font-semibold px-6 py-3.5 rounded-full hover:bg-gold-400"
               >
                 Shop Now <ArrowRight size={16} />
               </Link>
               <Link
                 href="/education"
-                className="inline-flex items-center gap-2 border border-white/30 text-white font-medium px-6 py-3.5 rounded-full hover:bg-white/10"
+                className="inline-flex items-center gap-2 border border-gold-400/40 text-gold-100 font-medium px-6 py-3.5 rounded-full hover:bg-white/10"
               >
                 Read Guides
               </Link>
@@ -250,28 +250,28 @@ export default function HomePage() {
         className="relative overflow-hidden"
         aria-label="Sale promotion"
       >
-        <div className="h-2 rainbow-gradient" />
-        <div className="bg-black text-white py-14">
+        <div className="h-2 gold-gradient" />
+        <div className="bg-wine-900 text-white py-14">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-blush-400 text-sm uppercase font-bold tracking-widest mb-2">
+            <p className="text-gold-400 text-sm uppercase font-bold tracking-widest mb-2">
               Limited Time
             </p>
             <h2 className="text-3xl sm:text-4xl font-display font-bold mb-4">
               Up to{" "}
-              <span className="rainbow-text">40% off</span> our best sellers
+              <span className="gold-text">40% off</span> our best sellers
             </h2>
-            <p className="text-gray-400 mb-8 max-w-lg mx-auto">
+            <p className="text-wine-100/70 mb-8 max-w-lg mx-auto">
               Don't miss our biggest sale of the season. Stock is limited — shop now before it's gone.
             </p>
             <Link
               href="/sale"
-              className="inline-flex items-center gap-2 bg-white text-black font-bold px-8 py-3.5 rounded-full hover:bg-gray-100"
+              className="inline-flex items-center gap-2 bg-gold-500 text-wine-900 font-bold px-8 py-3.5 rounded-full hover:bg-gold-400"
             >
               Shop the Sale <ArrowRight size={16} />
             </Link>
           </div>
         </div>
-        <div className="h-2 rainbow-gradient" />
+        <div className="h-2 gold-gradient" />
       </section>
 
       {/* Shop by Type — 8 category tiles */}
@@ -360,11 +360,11 @@ export default function HomePage() {
 
       {/* Sign-up Discount Block */}
       <section
-        className="py-16 bg-gradient-to-br from-blush-50 to-lilac-100"
+        className="py-16 bg-gradient-to-br from-wine-50 to-gold-100"
         aria-label="Newsletter signup"
       >
         <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
-          <p className="text-blush-500 text-sm font-bold uppercase tracking-widest mb-2">Exclusive offer</p>
+          <p className="text-wine-700 text-sm font-bold uppercase tracking-widest mb-2">Exclusive offer</p>
           <h2 className="text-3xl sm:text-4xl font-display font-bold text-gray-900 mb-3">
             Get 10% off your first order
           </h2>

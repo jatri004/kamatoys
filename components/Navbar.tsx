@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import {
   ShoppingBag,
@@ -82,10 +83,20 @@ export default function Navbar() {
             {/* Logo */}
             <Link
               href="/"
-              className="flex-shrink-0 text-xl font-display font-bold tracking-tight text-black"
+              className="flex-shrink-0 flex items-center gap-2"
               aria-label="KamaDesires.com home"
             >
-              Kama<span className="text-blush-500">Desires.com</span>
+              <Image
+                src="/images/logo.png"
+                alt="KamaDesires.com"
+                width={40}
+                height={40}
+                priority
+                className="w-10 h-10 rounded-full ring-1 ring-gold-400/50"
+              />
+              <span className="text-xl font-display font-bold tracking-tight text-wine-800">
+                Kama<span className="text-gold-600">Desires.com</span>
+              </span>
             </Link>
 
             {/* Search — desktop */}

@@ -42,10 +42,23 @@ h1, h2, h3 {
   background-clip: text;
 }
 
+/* Metallic gold text accent (matches the logo) */
+.gold-text {
+  background: linear-gradient(90deg, #a07f33, #e3c965, #d4af37, #f6ebc4, #c2a14a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Thin gold divider bar */
+.gold-gradient {
+  background: linear-gradient(90deg, #a07f33, #e3c965, #d4af37, #c2a14a, #a07f33);
+}
+
 /* Announcement bar */
 .announcement-bar {
-  background: #111;
-  color: #fff;
+  background: #420f1f; /* wine-900 */
+  color: #f6ebc4; /* gold-100 */
   font-size: 0.75rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -62,7 +75,7 @@ h1, h2, h3 {
 
 /* Focus styles */
 :focus-visible {
-  outline: 2px solid #f43f72;
+  outline: 2px solid #9b2847; /* wine-500 */
   outline-offset: 2px;
   border-radius: 2px;
 }

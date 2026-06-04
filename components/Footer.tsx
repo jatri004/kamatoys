@@ -55,27 +55,27 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white" aria-label="Site footer">
+    <footer className="bg-wine-950 text-white" aria-label="Site footer">
       {/* Trust strip */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left">
             <div className="flex items-center justify-center sm:justify-start gap-3">
-              <Truck size={20} className="text-blush-400 flex-shrink-0" />
+              <Truck size={20} className="text-gold-400 flex-shrink-0" />
               <div>
                 <p className="text-sm font-semibold">Free UK Delivery</p>
                 <p className="text-xs text-gray-400">On orders over £40</p>
               </div>
             </div>
             <div className="flex items-center justify-center sm:justify-start gap-3">
-              <Package size={20} className="text-blush-400 flex-shrink-0" />
+              <Package size={20} className="text-gold-400 flex-shrink-0" />
               <div>
                 <p className="text-sm font-semibold">Discreet Packaging</p>
                 <p className="text-xs text-gray-400">Plain box, no branding</p>
               </div>
             </div>
             <div className="flex items-center justify-center sm:justify-start gap-3">
-              <ShieldCheck size={20} className="text-blush-400 flex-shrink-0" />
+              <ShieldCheck size={20} className="text-gold-400 flex-shrink-0" />
               <div>
                 <p className="text-sm font-semibold">Secure Checkout</p>
                 <p className="text-xs text-gray-400">SSL encrypted & safe</p>

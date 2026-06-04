@@ -24,7 +24,11 @@ export default function NewsletterForm({ dark = false }: Props) {
       />
       <button
         type="submit"
-        className="w-full bg-blush-500 text-white text-sm font-semibold py-2.5 rounded-lg hover:bg-blush-600"
+        className={`w-full text-sm font-semibold py-2.5 rounded-lg ${
+          dark
+            ? "bg-gold-500 text-wine-900 hover:bg-gold-400"
+            : "bg-wine-700 text-white hover:bg-wine-800"
+        }`}
       >
         Subscribe & Save 10%
       </button>

@@ -30,7 +30,7 @@ export default function AgeVerification() {
     >
       <div className="relative max-w-sm w-full mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden">
         {/* Top accent */}
-        <div className="h-1 rainbow-gradient" />
+        <div className="h-1.5 gold-gradient" />
 
         <div className="p-8 text-center">
           <div className="text-4xl mb-4">🔞</div>
@@ -50,7 +50,7 @@ export default function AgeVerification() {
           <div className="flex flex-col gap-3">
             <button
               onClick={accept}
-              className="w-full bg-black text-white font-semibold py-3 rounded-lg hover:bg-gray-800 focus:bg-gray-800"
+              className="w-full bg-wine-800 text-white font-semibold py-3 rounded-lg hover:bg-wine-900 focus:bg-wine-900"
             >
               Yes, I am 18 or over — Enter
             </button>
