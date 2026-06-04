@@ -48,6 +48,7 @@ const navLinks = [
   { label: "Women", href: "/women" },
   { label: "Men", href: "/men" },
   { label: "LGBTQ+", href: "/lgbtq" },
+  { label: "Couples", href: "/couples" },
   { label: "Sale", href: "/sale" },
   { label: "Condoms", href: "/shop?cat=condoms" },
   { label: "Clothing", href: "/shop?cat=clothing" },
