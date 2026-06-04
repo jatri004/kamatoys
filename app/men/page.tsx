@@ -1,8 +1,33 @@
+import Link from "next/link";
 import { getProductsByCategory } from "@/lib/products";
 import ProductGrid from "@/components/ProductGrid";
 import SectionHeader from "@/components/SectionHeader";
 
 export const metadata = { title: "For Men" };
+
+// Shop-by-type taxonomy for the Men section. Each links to the shop filter.
+const menTypes = [
+  { label: "Masturbation Sleeve / Stroker", slug: "stroker" },
+  { label: "Couples' Ring / Cock Ring", slug: "ring" },
+  { label: "Anal Toy / Butt Plug", slug: "butt-plug" },
+  { label: "Prostate Massager", slug: "prostate" },
+  { label: "Penis Sleeve / Extender", slug: "penis-sleeve" },
+  { label: "Vibrator", slug: "vibrator" },
+  { label: "Penis Pump / Vacuum Trainer", slug: "penis-pump" },
+  { label: "Sex Doll", slug: "sex-doll" },
+  { label: "Dildo", slug: "dildo" },
+  { label: "Strap-On & Harness", slug: "strap-on" },
+  { label: "Nipple Clamps", slug: "nipple-clamps" },
+  { label: "Restraints (Cuffs, Straps, Ties)", slug: "restraints" },
+  { label: "Blindfold / Mask", slug: "blindfold" },
+  { label: "Sex Machine", slug: "sex-machine" },
+  { label: "Flogger / Whip", slug: "flogger" },
+  { label: "Paddle / Slapper", slug: "paddle" },
+  { label: "Gag (Ball or Ring)", slug: "gag" },
+  { label: "Electro-Stimulation (E-Stim) Device", slug: "e-stim" },
+  { label: "Nipple / Breast Suction Pump", slug: "nipple-pump" },
+  { label: "Urethral Sound / Insert", slug: "urethral-sound" },
+];
 
 export default function MenPage() {
   const products = getProductsByCategory("men");
@@ -15,6 +40,31 @@ export default function MenPage() {
           Strokers, rings, prostate massagers and more. Premium, body-safe, and built for real pleasure.
         </p>
       </div>
+
+      {/* Shop by Type */}
+      <section
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10"
+        aria-labelledby="men-types-heading"
+      >
+        <h2
+          id="men-types-heading"
+          className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4"
+        >
+          Shop by Type
+        </h2>
+        <div className="flex flex-wrap gap-2.5">
+          {menTypes.map((t) => (
+            <Link
+              key={t.slug}
+              href={`/shop?cat=${t.slug}`}
+              className="inline-flex items-center rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700 hover:border-blush-400 hover:bg-blush-50 hover:text-blush-600 transition-colors"
+            >
+              {t.label}
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <SectionHeader title="All Men's Products" subtitle={`${products.length} products`} />
         <ProductGrid products={products} />
