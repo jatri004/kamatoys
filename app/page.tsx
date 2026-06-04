@@ -66,7 +66,7 @@ const categories: CategoryTile[] = [
   },
   {
     label: "Couples",
-    href: "/shop?cat=couples",
+    href: "/couples",
     gradient: "from-rose-300 to-pink-400",
     emoji: "💞",
     sub: "Explore pleasure together",
@@ -338,7 +338,7 @@ export default function HomePage() {
           <SectionHeader
             title="Couples' Favourites"
             subtitle="Explore pleasure together"
-            href="/shop?cat=couples"
+            href="/couples"
             id="couples-heading"
           />
           <ProductGrid products={couplesPicks} columns={4} />

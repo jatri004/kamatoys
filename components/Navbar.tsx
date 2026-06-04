@@ -21,7 +21,7 @@ const shopDropdown = [
   { label: "Women", href: "/women" },
   { label: "Men", href: "/men" },
   { label: "LGBTQ+", href: "/lgbtq" },
-  { label: "Couples", href: "/shop?cat=couples" },
+  { label: "Couples", href: "/couples" },
   // Shop by toy type
   { label: "Vibrators", href: "/shop?cat=vibrator" },
   { label: "Luxury Vibrators", href: "/shop?cat=luxury" },
