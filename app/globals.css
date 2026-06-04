@@ -42,23 +42,23 @@ h1, h2, h3 {
   background-clip: text;
 }
 
-/* Metallic gold text accent (matches the logo) */
+/* Metallic rose-gold text accent (feminine luxury) */
 .gold-text {
-  background: linear-gradient(90deg, #a07f33, #e3c965, #d4af37, #f6ebc4, #c2a14a);
+  background: linear-gradient(90deg, #b76e79, #e6b3a4, #f1d0c4, #d99e95, #c98b88);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Thin gold divider bar */
+/* Thin rose-gold divider bar */
 .gold-gradient {
-  background: linear-gradient(90deg, #a07f33, #e3c965, #d4af37, #c2a14a, #a07f33);
+  background: linear-gradient(90deg, #b76e79, #e6b3a4, #f1d0c4, #d99e95, #b76e79);
 }
 
 /* Announcement bar */
 .announcement-bar {
-  background: #420f1f; /* wine-900 */
-  color: #f6ebc4; /* gold-100 */
+  background: #2c1a2b; /* plum-900 */
+  color: #f9e8e1; /* rose-gold-100 */
   font-size: 0.75rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -75,7 +75,7 @@ h1, h2, h3 {
 
 /* Focus styles */
 :focus-visible {
-  outline: 2px solid #9b2847; /* wine-500 */
+  outline: 2px solid #c43b78; /* rose-600 */
   outline-offset: 2px;
   border-radius: 2px;
 }

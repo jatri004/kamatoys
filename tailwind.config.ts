@@ -9,46 +9,46 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Primary brand accent — wine / burgundy (repointed from the old pink
-        // "blush" so all existing blush-* classes now render in the brand wine).
+        // Primary brand accent — refined feminine rose (all blush-* classes).
         blush: {
-          50: "#fcf3f5",
-          100: "#f8e3e9",
-          200: "#eec2ce",
-          300: "#dd91a8",
-          400: "#c9637f",
-          500: "#9b2847",
-          600: "#7e1f39",
-          700: "#661a30",
-          800: "#531528",
-          900: "#420f1f",
+          50: "#fdf3f8",
+          100: "#fbe6f0",
+          200: "#f7cce0",
+          300: "#f0a8c9",
+          400: "#e87daa",
+          500: "#db5793",
+          600: "#c43b78",
+          700: "#a32d61",
+          800: "#82264e",
+          900: "#5f1d39",
         },
-        // Explicit wine alias (burgundy) for backgrounds & brand surfaces.
+        // "wine" alias — repurposed to an elegant deep plum / mauve-aubergine
+        // for the dramatic dark sections (feminine-luxe, not burgundy).
         wine: {
-          50: "#fcf3f5",
-          100: "#f8e3e9",
-          200: "#eec2ce",
-          300: "#dd91a8",
-          400: "#c9637f",
-          500: "#9b2847",
-          600: "#7e1f39",
-          700: "#661a30",
-          800: "#531528",
-          900: "#420f1f",
-          950: "#2c0a15",
+          50: "#f8f2f7",
+          100: "#f0e2ee",
+          200: "#ddc3d9",
+          300: "#c39bbd",
+          400: "#a06f98",
+          500: "#7d4c74",
+          600: "#633a5c",
+          700: "#4f2e49",
+          800: "#3a2438",
+          900: "#2c1a2b",
+          950: "#1f121e",
         },
-        // Metallic gold accent (from the logo).
+        // Metallic accent — repurposed to soft rose gold / champagne (feminine).
         gold: {
-          50: "#fbf6e7",
-          100: "#f6ebc4",
-          200: "#eedd96",
-          300: "#e3c965",
-          400: "#d4af37",
-          500: "#c2a14a",
-          600: "#a07f33",
-          700: "#7d6226",
-          800: "#5f4a1d",
-          900: "#473814",
+          50: "#fdf5f2",
+          100: "#f9e8e1",
+          200: "#f1d0c4",
+          300: "#e6b3a4",
+          400: "#d99e95",
+          500: "#c98b88",
+          600: "#b76e79",
+          700: "#9c5663",
+          800: "#7c4450",
+          900: "#5e3540",
         },
         lilac: {
           100: "#f3e8ff",
