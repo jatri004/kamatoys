@@ -44,13 +44,25 @@ const educationLinks = [
 ];
 
 const socialLinks = [
-  { icon: FaYoutube, label: "YouTube", href: "#" },
-  { icon: FaSnapchat, label: "Snapchat", href: "#" },
-  { icon: FaFacebook, label: "Facebook", href: "#" },
-  { icon: FaInstagram, label: "Instagram", href: "#" },
-  { icon: FaTiktok, label: "TikTok", href: "#" },
-  { icon: FaPinterest, label: "Pinterest", href: "#" },
-  { icon: FaXTwitter, label: "X (Twitter)", href: "#" },
+  { icon: FaYoutube, label: "YouTube", href: "#", color: "#FF0000" },
+  { icon: FaSnapchat, label: "Snapchat", href: "#", color: "#FFFC00" },
+  { icon: FaFacebook, label: "Facebook", href: "#", color: "#1877F2" },
+  { icon: FaInstagram, label: "Instagram", href: "#", color: "#E4405F" },
+  { icon: FaTiktok, label: "TikTok", href: "#", color: "#FFFFFF" },
+  { icon: FaPinterest, label: "Pinterest", href: "#", color: "#E60023" },
+  { icon: FaXTwitter, label: "X (Twitter)", href: "#", color: "#FFFFFF" },
+];
+
+// Payment icons sit on white chips so brand colours (e.g. Visa navy) stay
+// legible against the dark footer. Klarna keeps its signature pink chip.
+const paymentMethods = [
+  { icon: FaCcVisa, label: "Visa", color: "#1A1F71", bg: "#ffffff" },
+  { icon: FaCcMastercard, label: "Mastercard", color: "#EB001B", bg: "#ffffff" },
+  { icon: FaCcAmex, label: "American Express", color: "#006FCF", bg: "#ffffff" },
+  { icon: FaCcPaypal, label: "PayPal", color: "#003087", bg: "#ffffff" },
+  { icon: FaCcApplePay, label: "Apple Pay", color: "#000000", bg: "#ffffff" },
+  { icon: FaGooglePay, label: "Google Pay", color: "#5F6368", bg: "#ffffff" },
+  { icon: SiKlarna, label: "Klarna", color: "#000000", bg: "#FFB3C7" },
 ];
 
 export default function Footer() {
@@ -162,12 +174,13 @@ export default function Footer() {
           <div className="mt-10 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
             {/* Social */}
             <div className="flex items-center gap-4">
-              {socialLinks.map(({ icon: Icon, label, href }) => (
+              {socialLinks.map(({ icon: Icon, label, href, color }) => (
                 <a
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="text-gray-400 hover:text-white text-xl transition-colors"
+                  className="text-xl transition-transform hover:scale-110"
+                  style={{ color }}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -176,15 +189,19 @@ export default function Footer() {
               ))}
             </div>
 
-            {/* Payment icons */}
-            <div className="flex items-center gap-3 text-3xl text-gray-300">
-              <FaCcVisa aria-label="Visa" />
-              <FaCcMastercard aria-label="Mastercard" />
-              <FaCcAmex aria-label="American Express" />
-              <FaCcPaypal aria-label="PayPal" />
-              <FaCcApplePay aria-label="Apple Pay" />
-              <FaGooglePay aria-label="Google Pay" />
-              <SiKlarna className="text-2xl" aria-label="Klarna" />
+            {/* Payment icons — brand colours on white chips */}
+            <div className="flex flex-wrap items-center gap-2">
+              {paymentMethods.map(({ icon: Icon, label, color, bg }) => (
+                <span
+                  key={label}
+                  aria-label={label}
+                  title={label}
+                  className="inline-flex items-center justify-center h-7 w-11 rounded-md shadow-sm"
+                  style={{ backgroundColor: bg }}
+                >
+                  <Icon className="text-2xl" style={{ color }} />
+                </span>
+              ))}
             </div>
           </div>
 
