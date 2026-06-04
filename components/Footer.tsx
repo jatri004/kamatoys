@@ -172,15 +172,15 @@ export default function Footer() {
 
           {/* Social + Payment */}
           <div className="mt-10 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
-            {/* Social */}
-            <div className="flex items-center gap-4">
+            {/* Social — brand colours on white chips for clear visibility */}
+            <div className="flex items-center gap-2.5">
               {socialLinks.map(({ icon: Icon, label, href, color }) => (
                 <a
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="text-xl transition-transform hover:scale-110"
-                  style={{ color }}
+                  className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-white shadow-sm text-lg transition-transform hover:scale-110"
+                  style={{ color: color === "#FFFFFF" ? "#000000" : color }}
                   rel="noopener noreferrer"
                   target="_blank"
                 >

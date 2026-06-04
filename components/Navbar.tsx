@@ -16,23 +16,41 @@ import { useCart } from "@/lib/cart";
 import { useWishlist } from "@/lib/wishlist";
 import CartDrawer from "./CartDrawer";
 
+const shopDropdown = [
+  // Shop by person
+  { label: "Women", href: "/women" },
+  { label: "Men", href: "/men" },
+  { label: "LGBTQ+", href: "/lgbtq" },
+  { label: "Couples", href: "/shop?cat=couples" },
+  // Shop by toy type
+  { label: "Vibrators", href: "/shop?cat=vibrator" },
+  { label: "Luxury Vibrators", href: "/shop?cat=luxury" },
+  { label: "Dildos", href: "/shop?cat=dildo" },
+  { label: "Butt Plugs", href: "/shop?cat=butt-plug" },
+  { label: "Strap-Ons & Harnesses", href: "/shop?cat=strap-on" },
+  { label: "Thrusting Toys", href: "/shop?cat=thrusting" },
+  { label: "Grinders", href: "/shop?cat=grinder" },
+  { label: "App / Remote Controlled", href: "/shop?cat=app-controlled" },
+  { label: "Prostate Massagers", href: "/shop?cat=prostate" },
+  { label: "Strokers", href: "/shop?cat=stroker" },
+  { label: "Bondage & BDSM", href: "/shop?cat=bondage" },
+  { label: "Kegel & Wellness", href: "/shop?cat=kegel" },
+  { label: "Lube", href: "/shop?cat=lube" },
+  { label: "Condoms", href: "/shop?cat=condoms" },
+  { label: "Clothing & Lingerie", href: "/shop?cat=clothing" },
+  { label: "Gift Cards", href: "/gift-cards" },
+  { label: "Sale", href: "/sale" },
+  { label: "New Arrivals", href: "/shop?filter=new" },
+];
+
 const navLinks = [
-  {
-    label: "Shop",
-    href: "/shop",
-    dropdown: [
-      { label: "Women", href: "/women" },
-      { label: "Men", href: "/men" },
-      { label: "LGBTQ+", href: "/lgbtq" },
-      { label: "Couples", href: "/shop?cat=couples" },
-      { label: "Sale", href: "/sale" },
-      { label: "New Arrivals", href: "/shop?filter=new" },
-    ],
-  },
+  { label: "Shop", href: "/shop", dropdown: shopDropdown },
   { label: "Women", href: "/women" },
   { label: "Men", href: "/men" },
   { label: "LGBTQ+", href: "/lgbtq" },
   { label: "Sale", href: "/sale" },
+  { label: "Condoms", href: "/shop?cat=condoms" },
+  { label: "Clothing", href: "/shop?cat=clothing" },
   { label: "Gift Cards", href: "/gift-cards" },
   { label: "Education", href: "/education" },
   { label: "Contact Us", href: "/contact" },
@@ -208,39 +226,50 @@ export default function Navbar() {
                   {link.label === "Sale" ? (
                     <Link
                       href={link.href}
-                      className="flex items-center gap-1 px-4 py-3 text-sm font-semibold text-red-600 hover:text-red-700"
+                      className="flex items-center gap-1 px-2.5 py-3 text-sm font-semibold text-red-600 hover:text-red-700"
                     >
                       {link.label}
                     </Link>
                   ) : link.label === "LGBTQ+" ? (
                     <Link
                       href={link.href}
-                      className="flex items-center gap-1 px-4 py-3 text-sm font-medium rainbow-text hover:opacity-80"
+                      className="flex items-center gap-1 px-2.5 py-3 text-sm font-medium rainbow-text hover:opacity-80"
                     >
                       {link.label}
                     </Link>
                   ) : (
                     <Link
                       href={link.href}
-                      className="flex items-center gap-1 px-4 py-3 text-sm font-medium text-gray-700 hover:text-black"
+                      className="flex items-center gap-1 px-2.5 py-3 text-sm font-medium text-gray-700 hover:text-black"
                     >
                       {link.label}
                       {link.dropdown && <ChevronDown size={14} className="mt-0.5" />}
                     </Link>
                   )}
 
-                  {/* Dropdown */}
+                  {/* Mega dropdown */}
                   {link.dropdown && (
-                    <div className="absolute top-full left-0 mt-0 w-44 bg-white border border-gray-100 shadow-lg rounded-b-lg rounded-tr-lg z-50 hidden group-hover:block">
-                      {link.dropdown.map((sub) => (
-                        <Link
-                          key={sub.label}
-                          href={sub.href}
-                          className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-blush-500 first:rounded-tr-lg last:rounded-b-lg"
-                        >
-                          {sub.label}
-                        </Link>
-                      ))}
+                    <div className="absolute top-full left-0 mt-0 w-[30rem] bg-white border border-gray-100 shadow-xl rounded-b-xl rounded-tr-xl z-50 hidden group-hover:block p-3">
+                      <p className="px-3 pt-1 pb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                        Shop everything
+                      </p>
+                      <div className="grid grid-cols-2 gap-x-2">
+                        {link.dropdown.map((sub) => (
+                          <Link
+                            key={sub.label}
+                            href={sub.href}
+                            className={`block px-3 py-2 text-sm rounded-md hover:bg-blush-50 ${
+                              sub.label === "Sale"
+                                ? "text-red-600 font-semibold"
+                                : sub.label === "LGBTQ+"
+                                ? "rainbow-text font-semibold"
+                                : "text-gray-700 hover:text-blush-600"
+                            }`}
+                          >
+                            {sub.label}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </li>
