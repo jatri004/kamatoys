@@ -21,6 +21,7 @@ export interface Product {
   color?: string;
   material?: string;
   flavour?: string;
+  sizes?: string[];
 }
 
 const rawProducts: Product[] = [
@@ -594,6 +595,7 @@ const rawProducts: Product[] = [
       "Super-thin natural latex condoms for a barely-there feel without compromising on safety. Electronically tested, CE certified.",
     features: ["Ultra-thin latex", "12 pack", "Electronically tested", "Reservoir tip", "CE certified"],
     gradient: "from-sky-200 to-indigo-200",
+    sizes: ["Regular"],
   },
   {
     id: "34",
@@ -611,6 +613,7 @@ const rawProducts: Product[] = [
       "Textured latex condoms with ribs and dots for heightened stimulation for both partners. Comfortably lubricated.",
     features: ["Ribbed & dotted", "12 pack", "Extra lubricated", "Natural latex", "CE certified"],
     gradient: "from-violet-200 to-purple-200",
+    sizes: ["Regular"],
   },
   {
     id: "35",
@@ -628,6 +631,7 @@ const rawProducts: Product[] = [
       "Ethically made vegan condoms — free from animal-derived casein. Thin, reliable, and fair-trade certified.",
     features: ["Vegan & fair-trade", "10 pack", "Thin & strong", "Fragrance-free", "CE certified"],
     gradient: "from-emerald-200 to-teal-200",
+    sizes: ["Regular"],
   },
   {
     id: "36",
@@ -645,6 +649,7 @@ const rawProducts: Product[] = [
       "Roomier, larger-fit latex condoms designed for extra comfort. Generously lubricated with a snug base.",
     features: ["Large fit", "12 pack", "Extra lubricated", "Natural latex", "CE certified"],
     gradient: "from-slate-300 to-slate-400",
+    sizes: ["Large"],
   },
   {
     id: "37",
@@ -663,6 +668,7 @@ const rawProducts: Product[] = [
       "A delicate floral-lace bodysuit with adjustable straps and a flattering high-cut leg. Designed to make you feel powerful.",
     features: ["Floral lace", "Adjustable straps", "High-cut leg", "Sizes XS–XXL", "Hand wash"],
     gradient: "from-gray-800 to-gray-900",
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
   },
   {
     id: "38",
@@ -680,6 +686,7 @@ const rawProducts: Product[] = [
       "A luxuriously soft satin robe with a tie waist — the perfect finishing layer. Lightweight and elegantly draped.",
     features: ["Soft satin", "Tie waist", "Mid-length", "Sizes S–XL", "Machine washable"],
     gradient: "from-pink-200 to-rose-300",
+    sizes: ["S", "M", "L", "XL"],
   },
   {
     id: "39",
@@ -697,6 +704,7 @@ const rawProducts: Product[] = [
       "A flowing sheer babydoll with matching brief. Romantic mesh with delicate lace trim and an empire waist.",
     features: ["Sheer mesh", "Lace trim", "Includes brief", "Sizes XS–XXL", "Hand wash"],
     gradient: "from-rose-200 to-fuchsia-200",
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
   },
   {
     id: "40",
@@ -714,6 +722,7 @@ const rawProducts: Product[] = [
       "Breathable performance mesh boxer briefs with a supportive contour pouch and soft waistband. Bold and comfortable.",
     features: ["Breathable mesh", "Contour pouch", "Soft waistband", "Sizes S–XL", "Machine washable"],
     gradient: "from-zinc-700 to-zinc-900",
+    sizes: ["S", "M", "L", "XL"],
   },
 ];
 

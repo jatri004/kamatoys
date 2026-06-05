@@ -74,6 +74,7 @@ export const FACETS: FacetDef[] = [
   { key: "price", label: "Price", values: (p) => [priceBucket(p.price)] },
   { key: "brand", label: "Brand", values: (p) => (p.brand ? [p.brand] : []) },
   { key: "color", label: "Colour", values: (p) => (p.color ? [p.color] : []) },
+  { key: "size", label: "Size", values: (p) => p.sizes ?? [] },
   { key: "material", label: "Material", values: (p) => (p.material ? [p.material] : []) },
   { key: "features", label: "Features", values: featureFlags },
   { key: "flavour", label: "Flavour", values: (p) => (p.flavour ? [p.flavour] : []) },
@@ -101,6 +102,7 @@ export const FACETS: FacetDef[] = [
 ];
 
 const PRICE_ORDER = ["Under £25", "£25 – £50", "£50 – £100", "£100+"];
+const SIZE_ORDER = ["XS", "S", "M", "L", "XL", "XXL", "Snug", "Regular", "Large"];
 
 export interface FacetOption {
   value: string;
@@ -125,6 +127,8 @@ export function buildFacets(items: Product[]): FacetGroup[] {
     let options = Array.from(counts.entries()).map(([value, count]) => ({ value, count }));
     if (facet.key === "price") {
       options.sort((a, b) => PRICE_ORDER.indexOf(a.value) - PRICE_ORDER.indexOf(b.value));
+    } else if (facet.key === "size") {
+      options.sort((a, b) => SIZE_ORDER.indexOf(a.value) - SIZE_ORDER.indexOf(b.value));
     } else {
       options.sort((a, b) => a.value.localeCompare(b.value));
     }
