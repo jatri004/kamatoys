@@ -46,12 +46,13 @@ const educationLinks = [
 
 const socialLinks = [
   { icon: FaYoutube, label: "YouTube", href: "#", color: "#FF0000" },
-  { icon: FaSnapchat, label: "Snapchat", href: "#", color: "#FFFC00" },
+  // Snapchat is a black ghost on its signature yellow chip.
+  { icon: FaSnapchat, label: "Snapchat", href: "#", color: "#000000", bg: "#FFFC00" },
   { icon: FaFacebook, label: "Facebook", href: "#", color: "#1877F2" },
   { icon: FaInstagram, label: "Instagram", href: "#", color: "#E4405F" },
-  { icon: FaTiktok, label: "TikTok", href: "#", color: "#FFFFFF" },
+  { icon: FaTiktok, label: "TikTok", href: "#", color: "#000000" },
   { icon: FaPinterest, label: "Pinterest", href: "#", color: "#E60023" },
-  { icon: FaXTwitter, label: "X (Twitter)", href: "#", color: "#FFFFFF" },
+  { icon: FaXTwitter, label: "X (Twitter)", href: "#", color: "#000000" },
 ];
 
 // Payment icons sit on white chips so brand colours (e.g. Visa navy) stay
@@ -173,15 +174,15 @@ export default function Footer() {
 
           {/* Social + Payment */}
           <div className="mt-10 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
-            {/* Social — brand colours on white chips for clear visibility */}
+            {/* Social — brand colours on chips for clear visibility */}
             <div className="flex items-center gap-2.5">
-              {socialLinks.map(({ icon: Icon, label, href, color }) => (
+              {socialLinks.map(({ icon: Icon, label, href, color, bg }) => (
                 <a
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-white shadow-sm text-lg transition-transform hover:scale-110"
-                  style={{ color: color === "#FFFFFF" ? "#000000" : color }}
+                  className="inline-flex items-center justify-center h-9 w-9 rounded-full shadow-sm text-lg transition-transform hover:scale-110"
+                  style={{ color, backgroundColor: (bg as string | undefined) ?? "#ffffff" }}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
