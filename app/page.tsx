@@ -70,6 +70,8 @@ const categories: CategoryTile[] = [
     gradient: "from-rose-300 to-pink-400",
     emoji: "💞",
     sub: "Explore pleasure together",
+    light: true,
+    image: "/images/couples-category.jpg",
   },
 ];
 
