@@ -63,6 +63,8 @@ const categories: CategoryTile[] = [
     gradient: "from-pink-400 via-purple-400 to-blue-400",
     emoji: "🏳️‍🌈",
     sub: "Inclusive range for all",
+    light: true,
+    image: "/images/lgbtq-category.jpg",
   },
   {
     label: "Couples",
