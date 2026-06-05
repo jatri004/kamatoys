@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import NewsletterForm from "./NewsletterForm";
 import {
   FaYoutube,
@@ -38,11 +39,9 @@ const shopLinks = [
   { label: "Gift Cards", href: "/gift-cards" },
 ];
 
-const educationLinks = [
+const companyLinks = [
+  { label: "About Us", href: "/about" },
   { label: "Education Hub", href: "/education" },
-  { label: "Buying Guides", href: "/education?cat=buying-guides" },
-  { label: "Wellness Blog", href: "/education?cat=wellness" },
-  { label: "About KamaDesires.com", href: "/about" },
   { label: "Careers", href: "/careers" },
 ];
 
@@ -143,13 +142,13 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* Education */}
+            {/* Company */}
             <div>
               <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
-                Learn
+                Company
               </h3>
               <ul className="space-y-2">
-                {educationLinks.map((l) => (
+                {companyLinks.map((l) => (
                   <li key={l.label}>
                     <Link
                       href={l.href}
@@ -210,10 +209,17 @@ export default function Footer() {
           </div>
 
           {/* Bottom bar */}
-          <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
-            <p>
-              © {new Date().getFullYear()} KamaDesires.com. All rights reserved.
-            </p>
+          <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+            <div className="flex items-center gap-3">
+              <Image
+                src="/images/logo.png"
+                alt="KamaDesires.com"
+                width={40}
+                height={40}
+                className="w-10 h-10 rounded-full ring-1 ring-gold-500/40"
+              />
+              <p>© {new Date().getFullYear()} KamaDesires.com. All rights reserved.</p>
+            </div>
             <div className="flex gap-4">
               <Link href="/privacy" className="hover:text-gray-300">
                 Privacy Policy
