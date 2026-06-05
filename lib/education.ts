@@ -32,7 +32,7 @@ export const articles: Article[] = [
     title: "Beginner's Guide to Vibrators",
     category: "Buying Guide",
     readTime: "6 min read",
-    color: "from-pink-100 to-rose-100",
+    color: "from-rose-100 to-pink-200",
     excerpt:
       "Overwhelmed by choice? We break down every type of vibrator and help you find your perfect match — safely and confidently.",
     sections: [
@@ -77,7 +77,7 @@ export const articles: Article[] = [
     title: "How to Choose the Right Lubricant",
     category: "Wellness",
     readTime: "4 min read",
-    color: "from-purple-100 to-violet-100",
+    color: "from-sky-100 to-blue-200",
     excerpt:
       "Water-based, silicone or oil? Learn which lube is safe with your toys, condoms and body.",
     sections: [
@@ -117,7 +117,7 @@ export const articles: Article[] = [
     title: "Exploring Pleasure Together as a Couple",
     category: "Couples",
     readTime: "8 min read",
-    color: "from-rose-100 to-pink-100",
+    color: "from-amber-100 to-rose-200",
     excerpt:
       "Communication, consent and the best ways to explore together — a shame-free guide for all relationships.",
     sections: [
@@ -159,7 +159,7 @@ export const articles: Article[] = [
     title: "Prostate Pleasure 101",
     category: "Men's Wellness",
     readTime: "5 min read",
-    color: "from-indigo-100 to-blue-100",
+    color: "from-indigo-100 to-violet-200",
     excerpt:
       "What is the prostate, and why does stimulating it feel good? A friendly, medically-informed introduction.",
     sections: [
@@ -193,7 +193,7 @@ export const articles: Article[] = [
     title: "Anal Play: A Beginner's Safety Guide",
     category: "Guides",
     readTime: "7 min read",
-    color: "from-amber-100 to-orange-100",
+    color: "from-orange-100 to-amber-200",
     excerpt:
       "Go slow, use plenty of lube, and start small. Everything you need for safe, comfortable exploration.",
     sections: [
@@ -234,7 +234,7 @@ export const articles: Article[] = [
     title: "Kegel Exercises: Benefits & How to Start",
     category: "Wellness",
     readTime: "5 min read",
-    color: "from-teal-100 to-cyan-100",
+    color: "from-emerald-100 to-teal-200",
     excerpt:
       "Strengthen your pelvic floor for better bladder control, recovery and pleasure. Includes a simple routine.",
     sections: [
@@ -318,7 +318,7 @@ export const articles: Article[] = [
     title: "How to Clean and Store Your Toys",
     category: "Care & Safety",
     readTime: "4 min read",
-    color: "from-green-100 to-teal-100",
+    color: "from-lime-100 to-green-200",
     excerpt:
       "Proper cleaning extends the life of your toys and keeps you safe. A material-by-material guide.",
     sections: [

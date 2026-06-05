@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/lib/cart";
-import { ShieldCheck, Lock, Check, Tag, Gift } from "lucide-react";
+import { ShieldCheck, Lock, Tag, Gift, Heart } from "lucide-react";
 import { FaApplePay, FaGooglePay, FaPaypal, FaCcVisa, FaCcMastercard, FaCcAmex } from "react-icons/fa6";
 import { SiKlarna, SiAfterpay } from "react-icons/si";
 
@@ -25,9 +25,11 @@ export default function CheckoutPage() {
   const [giftValue, setGiftValue] = useState(0);
   const [giftMsg, setGiftMsg] = useState("");
 
+  const [donation, setDonation] = useState(0);
+
   const shipping = totalPrice >= 40 ? 0 : 3.99;
   const promoDiscount = totalPrice * promoPct;
-  const total = Math.max(0, totalPrice - promoDiscount + shipping - giftValue);
+  const total = Math.max(0, totalPrice - promoDiscount + shipping - giftValue) + donation;
 
   const applyPromo = () => {
     const code = promoInput.trim().toUpperCase();
@@ -134,6 +136,38 @@ export default function CheckoutPage() {
             <div className="grid grid-cols-2 gap-4">
               <input type="text" required placeholder="City" aria-label="City" className={inputCls} />
               <input type="text" required placeholder="Postcode" aria-label="Postcode" className={inputCls} />
+            </div>
+          </section>
+
+          {/* Charity donation */}
+          <section className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+            <div className="flex items-start gap-3 mb-4">
+              <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
+                <Heart size={16} className="text-[#2e008b]" />
+              </div>
+              <div>
+                <h2 className="font-display font-bold text-base">Add a donation</h2>
+                <p className="text-sm text-gray-500">
+                  We proudly support <strong>Cancer Research UK</strong>. Add a small amount and we&apos;ll
+                  pass on 100%.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {[0, 1, 2, 3, 5].map((amt) => (
+                <button
+                  key={amt}
+                  type="button"
+                  onClick={() => setDonation(amt)}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold border-2 transition-colors ${
+                    donation === amt
+                      ? "border-blush-500 bg-blush-50 text-blush-600"
+                      : "border-gray-200 text-gray-700 hover:border-gray-300"
+                  }`}
+                >
+                  {amt === 0 ? "No thanks" : `£${amt.toFixed(2)}`}
+                </button>
+              ))}
             </div>
           </section>
 
@@ -258,6 +292,9 @@ export default function CheckoutPage() {
               </div>
               {giftValue > 0 && (
                 <div className="flex justify-between text-green-600"><span>Gift card</span><span>−£{giftValue.toFixed(2)}</span></div>
+              )}
+              {donation > 0 && (
+                <div className="flex justify-between text-gray-600"><span>Donation (Cancer Research UK)</span><span>£{donation.toFixed(2)}</span></div>
               )}
               <div className="flex justify-between font-bold text-base border-t border-gray-100 pt-2 mt-2">
                 <span>Total</span><span>£{total.toFixed(2)}</span>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import CharityNote from "@/components/CharityNote";
 import {
   ShieldCheck,
   Truck,
@@ -400,6 +401,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      <CharityNote />
     </>
   );
 }
