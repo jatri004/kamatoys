@@ -1,11 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingBag, Plus, Minus, Trash2, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { ShoppingBag, Plus, Minus, Trash2, ArrowRight, Gift } from "lucide-react";
 import { useCart } from "@/lib/cart";
+
+const GIFT_NOTE_MAX = 250;
 
 export default function CartPage() {
   const { items, removeFromCart, increment, decrement, totalPrice, clearCart } = useCart();
+  const [isGift, setIsGift] = useState(false);
+  const [giftNote, setGiftNote] = useState("");
+  const [noInvoice, setNoInvoice] = useState(true);
 
   if (items.length === 0) {
     return (
@@ -85,6 +91,59 @@ export default function CartPage() {
           >
             Clear bag
           </button>
+
+          {/* Gift options */}
+          <div className="bg-white border border-gray-100 rounded-xl p-5 shadow-sm mt-4">
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={isGift}
+                onChange={(e) => setIsGift(e.target.checked)}
+                className="w-4 h-4 rounded border-gray-300 accent-blush-500"
+              />
+              <span className="flex items-center gap-2 text-sm font-semibold text-gray-900">
+                <Gift size={16} className="text-blush-500" />
+                This order is a gift
+              </span>
+            </label>
+
+            {isGift && (
+              <div className="mt-4 space-y-4 pl-1">
+                <div>
+                  <label htmlFor="gift-note" className="block text-sm font-medium text-gray-700 mb-1.5">
+                    Gift note <span className="text-gray-400 font-normal">(we&apos;ll include a handwritten card)</span>
+                  </label>
+                  <textarea
+                    id="gift-note"
+                    rows={3}
+                    maxLength={GIFT_NOTE_MAX}
+                    value={giftNote}
+                    onChange={(e) => setGiftNote(e.target.value)}
+                    placeholder="Write a personal message…"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blush-400 resize-none"
+                  />
+                  <p className="text-xs text-gray-400 text-right mt-1">
+                    {giftNote.length}/{GIFT_NOTE_MAX}
+                  </p>
+                </div>
+
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={noInvoice}
+                    onChange={(e) => setNoInvoice(e.target.checked)}
+                    className="mt-0.5 w-4 h-4 rounded border-gray-300 accent-blush-500"
+                  />
+                  <span className="text-sm text-gray-700">
+                    Don&apos;t include a paper invoice / receipt in the parcel
+                    <span className="block text-xs text-gray-400 mt-0.5">
+                      Prices are always hidden in the box. A digital receipt is emailed to you only.
+                    </span>
+                  </span>
+                </label>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Summary */}

@@ -148,6 +148,50 @@ export default async function ProductPage({ params }: Props) {
         </div>
       </div>
 
+      {/* Description box */}
+      <section className="mt-12 lg:mt-16" aria-labelledby="description-heading">
+        <div className="rounded-2xl border border-gray-100 bg-gray-50/60 p-6 sm:p-8">
+          <h2 id="description-heading" className="text-xl font-display font-bold text-gray-900 mb-4">
+            Description
+          </h2>
+          <p className="text-gray-700 text-sm leading-relaxed mb-6">{product.description}</p>
+
+          <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-3">
+            Product Details
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2">
+            {product.features.map((f) => (
+              <div key={f} className="flex items-center gap-2 text-sm text-gray-700">
+                <span className="w-1.5 h-1.5 rounded-full bg-blush-400 flex-shrink-0" />
+                {f}
+              </div>
+            ))}
+            {product.material && (
+              <div className="flex items-center gap-2 text-sm text-gray-700">
+                <span className="w-1.5 h-1.5 rounded-full bg-blush-400 flex-shrink-0" />
+                Material: {product.material}
+              </div>
+            )}
+            {product.sizes && product.sizes.length > 0 && (
+              <div className="flex items-center gap-2 text-sm text-gray-700">
+                <span className="w-1.5 h-1.5 rounded-full bg-blush-400 flex-shrink-0" />
+                Sizes: {product.sizes.join(", ")}
+              </div>
+            )}
+            {product.brand && (
+              <div className="flex items-center gap-2 text-sm text-gray-700">
+                <span className="w-1.5 h-1.5 rounded-full bg-blush-400 flex-shrink-0" />
+                Brand: {product.brand}
+              </div>
+            )}
+          </div>
+
+          <p className="mt-6 text-xs text-gray-400">
+            Shipped in plain, discreet packaging. Bank statement shows &quot;KD Retail&quot;.
+          </p>
+        </div>
+      </section>
+
       {/* Customers Also Viewed */}
       {related.length > 0 && (
         <section className="mt-16" aria-labelledby="related-heading">
