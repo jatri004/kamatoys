@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
-import { getProductBySlug, products } from "@/lib/products";
+import { getProductBySlug, getRelatedProducts, products } from "@/lib/products";
 import { Star, Package, Truck, ShieldCheck, RotateCcw } from "lucide-react";
 import AddToCartButton from "@/components/AddToCartButton";
 import WishlistButton from "@/components/WishlistButton";
+import ProductGrid from "@/components/ProductGrid";
+import SectionHeader from "@/components/SectionHeader";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -30,6 +32,8 @@ export default async function ProductPage({ params }: Props) {
   const discount = product.originalPrice
     ? Math.round((1 - product.price / product.originalPrice) * 100)
     : 0;
+
+  const related = getRelatedProducts(product, 4);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -143,6 +147,18 @@ export default async function ProductPage({ params }: Props) {
           </div>
         </div>
       </div>
+
+      {/* Customers Also Viewed */}
+      {related.length > 0 && (
+        <section className="mt-16" aria-labelledby="related-heading">
+          <SectionHeader
+            title="Customers Also Viewed"
+            subtitle="You might also like these"
+            id="related-heading"
+          />
+          <ProductGrid products={related} columns={4} />
+        </section>
+      )}
     </div>
   );
 }

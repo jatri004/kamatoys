@@ -792,3 +792,18 @@ export function getProductBySlug(slug: string): Product | undefined {
 export function getTrending(): Product[] {
   return products.filter((p) => p.tags.includes("trending"));
 }
+
+// "Customers also viewed" — products most similar to the given one, ranked by
+// shared tags then same category, excluding the product itself.
+export function getRelatedProducts(product: Product, count = 4): Product[] {
+  const scored = products
+    .filter((p) => p.id !== product.id)
+    .map((p) => {
+      const sharedTags = p.tags.filter((t) => product.tags.includes(t)).length;
+      const sameCategory = p.category === product.category ? 1 : 0;
+      return { p, score: sharedTags * 2 + sameCategory };
+    })
+    .sort((a, b) => b.score - a.score || b.p.rating - a.p.rating);
+
+  return scored.slice(0, count).map((s) => s.p);
+}
