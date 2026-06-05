@@ -1,11 +1,10 @@
-import Link from "next/link";
 import { getProductsByCategory } from "@/lib/products";
 import FilterableProductGrid from "@/components/FilterableProductGrid";
 import SectionHeader from "@/components/SectionHeader";
 
 export const metadata = { title: "For Women" };
 
-// Shop-by-type taxonomy for the Women section. Each links to the shop filter.
+// Type taxonomy for the Women section — shown as the "Type" filter group.
 const womenTypes = [
   { label: "Vibrator", slug: "vibrator" },
   { label: "Dildo", slug: "dildo" },
@@ -42,33 +41,9 @@ export default function WomenPage() {
         </p>
       </div>
 
-      {/* Shop by Type */}
-      <section
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10"
-        aria-labelledby="women-types-heading"
-      >
-        <h2
-          id="women-types-heading"
-          className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4"
-        >
-          Shop by Type
-        </h2>
-        <div className="flex flex-wrap gap-2.5">
-          {womenTypes.map((t) => (
-            <Link
-              key={t.slug}
-              href={`/shop?cat=${t.slug}`}
-              className="inline-flex items-center rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700 hover:border-blush-400 hover:bg-blush-50 hover:text-blush-600 transition-colors"
-            >
-              {t.label}
-            </Link>
-          ))}
-        </div>
-      </section>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <SectionHeader title="All Women's Products" />
-        <FilterableProductGrid products={products} />
+        <FilterableProductGrid products={products} typeFilters={womenTypes} />
       </div>
     </div>
   );

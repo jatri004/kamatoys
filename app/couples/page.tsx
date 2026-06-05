@@ -1,7 +1,6 @@
 import { products } from "@/lib/products";
 import FilterableProductGrid from "@/components/FilterableProductGrid";
 import SectionHeader from "@/components/SectionHeader";
-import ShopByType from "@/components/ShopByType";
 
 export const metadata = { title: "For Couples" };
 
@@ -41,11 +40,9 @@ export default function CouplesPage() {
         </p>
       </div>
 
-      <ShopByType types={couplesTypes} id="couples-types-heading" />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <SectionHeader title="Couples' Collection" />
-        <FilterableProductGrid products={couplesProducts} />
+        <FilterableProductGrid products={couplesProducts} typeFilters={couplesTypes} />
       </div>
     </div>
   );

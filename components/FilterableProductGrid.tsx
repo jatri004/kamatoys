@@ -6,17 +6,52 @@ import ProductGrid from "./ProductGrid";
 import type { Product } from "@/lib/products";
 import { buildFacets, filterProducts, type ActiveFilters } from "@/lib/filters";
 
-interface Props {
-  products: Product[];
+export interface TypeFilter {
+  label: string;
+  slug: string;
 }
 
-export default function FilterableProductGrid({ products }: Props) {
+interface Props {
+  products: Product[];
+  // Optional curated Type list (shown as a filter group, matched on tags).
+  typeFilters?: TypeFilter[];
+}
+
+export default function FilterableProductGrid({ products, typeFilters }: Props) {
   const [active, setActive] = useState<ActiveFilters>({});
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Facet options are derived from the full set for this page.
-  const facets = useMemo(() => buildFacets(products), [products]);
-  const filtered = useMemo(() => filterProducts(products, active), [products, active]);
+  // Generic facets derived from the products. When a curated Type list is
+  // supplied we drop the auto-derived "type" facet and use the curated one.
+  const facets = useMemo(() => {
+    const f = buildFacets(products);
+    return typeFilters ? f.filter((g) => g.key !== "type") : f;
+  }, [products, typeFilters]);
+
+  // Curated Type options with live counts (value = label, matched via slug).
+  const slugByLabel = useMemo(
+    () => Object.fromEntries((typeFilters ?? []).map((t) => [t.label, t.slug])),
+    [typeFilters]
+  );
+  const typeOptions = useMemo(
+    () =>
+      (typeFilters ?? []).map((t) => ({
+        value: t.label,
+        count: products.filter((p) => p.tags.includes(t.slug)).length,
+      })),
+    [typeFilters, products]
+  );
+
+  const filtered = useMemo(() => {
+    const { type: typeSel, ...rest } = active;
+    let result = filterProducts(products, rest);
+    if (typeFilters && typeSel && typeSel.length > 0) {
+      result = result.filter((p) =>
+        typeSel.some((label) => p.tags.includes(slugByLabel[label]))
+      );
+    }
+    return result;
+  }, [products, active, typeFilters, slugByLabel]);
 
   const activeCount = Object.values(active).reduce((n, v) => n + v.length, 0);
 
@@ -42,8 +77,38 @@ export default function FilterableProductGrid({ products }: Props) {
           </button>
         )}
       </div>
+      {/* Curated Type group (when provided) */}
+      {typeFilters && typeOptions.length > 0 && (
+        <details open className="border-b border-gray-100 py-3 group">
+          <summary className="flex items-center justify-between cursor-pointer list-none text-sm font-semibold text-gray-800">
+            Type
+            <ChevronDown size={15} className="text-gray-400 transition-transform group-open:rotate-180" />
+          </summary>
+          <div className="mt-3 space-y-1.5 max-h-72 overflow-y-auto pr-1">
+            {typeOptions.map((opt) => {
+              const checked = (active.type ?? []).includes(opt.value);
+              return (
+                <label
+                  key={opt.value}
+                  className="flex items-center gap-2.5 text-sm text-gray-600 cursor-pointer hover:text-gray-900"
+                >
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => toggle("type", opt.value)}
+                    className="w-4 h-4 rounded border-gray-300 accent-blush-500 flex-shrink-0"
+                  />
+                  <span className="flex-1 leading-tight">{opt.value}</span>
+                  <span className="text-xs text-gray-400">{opt.count}</span>
+                </label>
+              );
+            })}
+          </div>
+        </details>
+      )}
+
       {facets.map((group, i) => (
-        <details key={group.key} open={i < 4} className="border-b border-gray-100 py-3 group">
+        <details key={group.key} open={i < 3} className="border-b border-gray-100 py-3 group">
           <summary className="flex items-center justify-between cursor-pointer list-none text-sm font-semibold text-gray-800">
             {group.label}
             <ChevronDown size={15} className="text-gray-400 transition-transform group-open:rotate-180" />
