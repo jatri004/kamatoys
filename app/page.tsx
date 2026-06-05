@@ -399,6 +399,30 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* Careers strip */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14" aria-label="Careers">
+        <div className="rounded-2xl bg-wine-900 text-white px-6 py-10 sm:px-10 sm:py-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+          <div>
+            <p className="text-gold-400 text-xs font-bold uppercase tracking-widest mb-2">
+              We're hiring
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-display font-bold mb-2">
+              Join the KamaDesires.com team
+            </h2>
+            <p className="text-wine-100/80 text-sm max-w-md">
+              Love what we do? Send us your CV and help us build the UK's most inclusive
+              intimate-wellness brand.
+            </p>
+          </div>
+          <Link
+            href="/careers"
+            className="inline-flex items-center gap-2 bg-gold-500 text-wine-900 font-semibold px-7 py-3.5 rounded-full hover:bg-gold-400 whitespace-nowrap"
+          >
+            View Careers &amp; Apply <ArrowRight size={16} />
+          </Link>
+        </div>
+      </section>
     </>
   );
 }

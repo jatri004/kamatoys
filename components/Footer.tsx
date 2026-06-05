@@ -41,6 +41,7 @@ const educationLinks = [
   { label: "Buying Guides", href: "/education?cat=buying-guides" },
   { label: "Wellness Blog", href: "/education?cat=wellness" },
   { label: "About KamaDesires.com", href: "/about" },
+  { label: "Careers", href: "/careers" },
 ];
 
 const socialLinks = [
