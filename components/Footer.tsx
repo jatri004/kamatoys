@@ -30,10 +30,12 @@ const customerService = [
 const shopLinks = [
   { label: "Women", href: "/women" },
   { label: "Men", href: "/men" },
+  { label: "Couples", href: "/couples" },
   { label: "LGBTQ+", href: "/lgbtq" },
+  { label: "Condoms", href: "/shop?cat=condoms" },
+  { label: "Clothing & Lingerie", href: "/shop?cat=clothing" },
   { label: "Sale", href: "/sale" },
   { label: "Gift Cards", href: "/gift-cards" },
-  { label: "New Arrivals", href: "/shop?filter=new" },
 ];
 
 const educationLinks = [
