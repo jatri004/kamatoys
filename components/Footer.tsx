@@ -41,6 +41,7 @@ const shopLinks = [
 
 const companyLinks = [
   { label: "About Us", href: "/about" },
+  { label: "Why Us?", href: "/why-us" },
   { label: "Education Hub", href: "/education" },
   { label: "Careers", href: "/careers" },
 ];
