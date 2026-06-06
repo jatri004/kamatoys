@@ -16,7 +16,11 @@ import { isShopifyConfigured, getShopifyProducts, getShopifyProductByHandle } fr
 export async function fetchProducts(): Promise<Product[]> {
   if (isShopifyConfigured()) {
     try {
-      return await getShopifyProducts();
+      const shopifyProducts = await getShopifyProducts();
+      // Fall back to demo data while the Shopify catalogue is still empty
+      // (e.g. before products are added/published to the sales channel).
+      if (shopifyProducts.length > 0) return shopifyProducts;
+      console.warn("[catalog] Shopify returned 0 products — using demo data until the store is populated.");
     } catch (err) {
       console.error("[catalog] Shopify fetch failed, falling back to demo data:", err);
     }
