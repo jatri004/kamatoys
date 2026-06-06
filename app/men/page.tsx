@@ -1,4 +1,4 @@
-import { getProductsByCategory } from "@/lib/products";
+import { fetchProductsByCategory } from "@/lib/catalog";
 import FilterableProductGrid from "@/components/FilterableProductGrid";
 import SectionHeader from "@/components/SectionHeader";
 
@@ -28,8 +28,8 @@ const menTypes = [
   { label: "Urethral Sound / Insert", slug: "urethral-sound" },
 ];
 
-export default function MenPage() {
-  const products = getProductsByCategory("men");
+export default async function MenPage() {
+  const products = await fetchProductsByCategory("men");
   return (
     <div>
       <div className="bg-gradient-to-br from-slate-800 to-gray-900 py-14 text-center px-4 text-white">

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ShoppingBag, Heart, Star } from "lucide-react";
 import { useCart } from "@/lib/cart";
 import { useWishlist } from "@/lib/wishlist";
@@ -25,6 +26,15 @@ export default function ProductCard({ product }: Props) {
         <div
           className={`relative aspect-square bg-gradient-to-br ${product.gradient} overflow-hidden`}
         >
+          {product.image && (
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          )}
           {/* Badges */}
           <div className="absolute top-2 left-2 flex flex-col gap-1.5">
             {product.isSale && (

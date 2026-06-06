@@ -20,7 +20,7 @@ import {
 import ProductGrid from "@/components/ProductGrid";
 import SectionHeader from "@/components/SectionHeader";
 import NewsletterForm from "@/components/NewsletterForm";
-import { getBestsellers, getNewArrivals, products } from "@/lib/products";
+import { fetchProducts } from "@/lib/catalog";
 
 const trustBadges = [
   { icon: Truck, label: "Free UK Delivery", sub: "On orders over £40" },
@@ -123,9 +123,10 @@ const educationTeasers = [
   },
 ];
 
-export default function HomePage() {
-  const bestsellers = getBestsellers().slice(0, 8);
-  const newArrivals = getNewArrivals().slice(0, 4);
+export default async function HomePage() {
+  const products = await fetchProducts();
+  const bestsellers = products.filter((p) => p.isBestseller).slice(0, 8);
+  const newArrivals = products.filter((p) => p.isNew).slice(0, 4);
   const couplesPicks = products.filter((p) => p.category === "couples").slice(0, 4);
 
   return (

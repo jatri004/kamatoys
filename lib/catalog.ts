@@ -31,7 +31,9 @@ export async function fetchProducts(): Promise<Product[]> {
 export async function fetchProductBySlug(slug: string): Promise<Product | undefined> {
   if (isShopifyConfigured()) {
     try {
-      return await getShopifyProductByHandle(slug);
+      const product = await getShopifyProductByHandle(slug);
+      if (product) return product;
+      // Not found in Shopify (e.g. store still empty) — try demo data.
     } catch (err) {
       console.error("[catalog] Shopify product fetch failed, falling back to demo data:", err);
     }

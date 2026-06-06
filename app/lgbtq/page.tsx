@@ -1,4 +1,4 @@
-import { getProductsByCategory } from "@/lib/products";
+import { fetchProductsByCategory } from "@/lib/catalog";
 import FilterableProductGrid from "@/components/FilterableProductGrid";
 import SectionHeader from "@/components/SectionHeader";
 
@@ -27,8 +27,8 @@ const lgbtqTypes = [
   { label: "Sex Machine / Automated Thrusting Device", slug: "sex-machine" },
 ];
 
-export default function LGBTQPage() {
-  const products = getProductsByCategory("lgbtq");
+export default async function LGBTQPage() {
+  const products = await fetchProductsByCategory("lgbtq");
   return (
     <div>
       <div className="relative overflow-hidden py-14 text-center px-4">

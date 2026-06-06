@@ -1,4 +1,4 @@
-import { products } from "@/lib/products";
+import { fetchProductsByCategory } from "@/lib/catalog";
 import FilterableProductGrid from "@/components/FilterableProductGrid";
 import SectionHeader from "@/components/SectionHeader";
 
@@ -27,8 +27,8 @@ const couplesTypes = [
   { label: "Gag (Ball or Ring)", slug: "gag" },
 ];
 
-export default function CouplesPage() {
-  const couplesProducts = products.filter((p) => p.category === "couples");
+export default async function CouplesPage() {
+  const couplesProducts = await fetchProductsByCategory("couples");
   return (
     <div>
       {/* Hero */}

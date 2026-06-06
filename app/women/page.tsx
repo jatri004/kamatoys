@@ -1,4 +1,4 @@
-import { getProductsByCategory } from "@/lib/products";
+import { fetchProductsByCategory } from "@/lib/catalog";
 import FilterableProductGrid from "@/components/FilterableProductGrid";
 import SectionHeader from "@/components/SectionHeader";
 
@@ -28,8 +28,8 @@ const womenTypes = [
   { label: "Electro-Stimulation (E-Stim) Device", slug: "e-stim" },
 ];
 
-export default function WomenPage() {
-  const products = getProductsByCategory("women");
+export default async function WomenPage() {
+  const products = await fetchProductsByCategory("women");
   return (
     <div>
       {/* Hero */}

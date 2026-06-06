@@ -1,4 +1,4 @@
-import { products, getSaleProducts, getNewArrivals, getBestsellers } from "@/lib/products";
+import { fetchProducts } from "@/lib/catalog";
 import FilterableProductGrid from "@/components/FilterableProductGrid";
 import SectionHeader from "@/components/SectionHeader";
 
@@ -10,6 +10,7 @@ export const metadata = { title: "Shop All Products" };
 
 export default async function ShopPage({ searchParams }: Props) {
   const { q, filter, cat } = await searchParams;
+  const products = await fetchProducts();
 
   let filtered = products;
   let heading = "All Products";
@@ -26,15 +27,15 @@ export default async function ShopPage({ searchParams }: Props) {
     heading = `Search: "${q}"`;
     subtitle = `${filtered.length} result${filtered.length !== 1 ? "s" : ""}`;
   } else if (filter === "sale") {
-    filtered = getSaleProducts();
+    filtered = products.filter((p) => p.isSale);
     heading = "On Sale";
     subtitle = `${filtered.length} products on sale`;
   } else if (filter === "new") {
-    filtered = getNewArrivals();
+    filtered = products.filter((p) => p.isNew);
     heading = "New Arrivals";
     subtitle = `${filtered.length} new products`;
   } else if (filter === "bestseller") {
-    filtered = getBestsellers();
+    filtered = products.filter((p) => p.isBestseller);
     heading = "Bestsellers";
     subtitle = `${filtered.length} top-rated products`;
   } else if (cat) {

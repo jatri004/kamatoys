@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
-import { getProductBySlug, getRelatedProducts, products } from "@/lib/products";
+import Image from "next/image";
+import { products as demoProducts } from "@/lib/products";
+import { fetchProductBySlug, fetchProducts } from "@/lib/catalog";
 import { Star, Package, Truck, ShieldCheck, RotateCcw } from "lucide-react";
 import AddToCartButton from "@/components/AddToCartButton";
 import WishlistButton from "@/components/WishlistButton";
@@ -10,13 +12,16 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
+// Pre-render demo slugs; live Shopify handles render on-demand (dynamicParams).
+export const dynamicParams = true;
+
+export function generateStaticParams() {
+  return demoProducts.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await fetchProductBySlug(slug);
   if (!product) return { title: "Product Not Found" };
   return {
     title: product.name,
@@ -26,14 +31,26 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await fetchProductBySlug(slug);
   if (!product) notFound();
 
   const discount = product.originalPrice
     ? Math.round((1 - product.price / product.originalPrice) * 100)
     : 0;
 
-  const related = getRelatedProducts(product, 4);
+  // Related: rank others by shared tags then same category.
+  const all = await fetchProducts();
+  const related = all
+    .filter((p) => p.id !== product.id)
+    .map((p) => ({
+      p,
+      score:
+        p.tags.filter((t) => product.tags.includes(t)).length * 2 +
+        (p.category === product.category ? 1 : 0),
+    }))
+    .sort((a, b) => b.score - a.score || b.p.rating - a.p.rating)
+    .slice(0, 4)
+    .map((s) => s.p);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -41,9 +58,20 @@ export default async function ProductPage({ params }: Props) {
         {/* Image */}
         <div>
           <div
-            className={`aspect-square rounded-2xl bg-gradient-to-br ${product.gradient} w-full`}
+            className={`relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-br ${product.gradient} w-full`}
             aria-label={`${product.name} product image`}
-          />
+          >
+            {product.image && (
+              <Image
+                src={product.image}
+                alt={product.name}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
+            )}
+          </div>
           {/* Thumbnail row */}
           <div className="flex gap-3 mt-3">
             {[1, 2, 3].map((i) => (
