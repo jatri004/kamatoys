@@ -22,6 +22,8 @@ export interface Product {
   material?: string;
   flavour?: string;
   sizes?: string[];
+  // Real product image URL (e.g. from Shopify). Falls back to `gradient`.
+  image?: string;
 }
 
 const rawProducts: Product[] = [
