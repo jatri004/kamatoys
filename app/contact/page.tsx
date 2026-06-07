@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Phone, Clock, Send, CheckCircle } from "lucide-react";
+import { Mail, Clock, Send, CheckCircle } from "lucide-react";
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
@@ -32,17 +32,6 @@ export default function ContactPage() {
                 <p className="font-semibold text-gray-900 text-sm">Email Us</p>
                 <p className="text-sm text-gray-600 mt-0.5">hello@kamadesires.com</p>
                 <p className="text-xs text-gray-400 mt-1">We reply within 24 hours on business days.</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-blush-50 rounded-full flex items-center justify-center flex-shrink-0">
-                <Phone size={18} className="text-blush-500" />
-              </div>
-              <div>
-                <p className="font-semibold text-gray-900 text-sm">Phone</p>
-                <p className="text-sm text-gray-600 mt-0.5">+44 20 1234 5678</p>
-                <p className="text-xs text-gray-400 mt-1">Mon–Fri, 9am–5pm GMT</p>
               </div>
             </div>
 
