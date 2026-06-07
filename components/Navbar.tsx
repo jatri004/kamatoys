@@ -61,6 +61,8 @@ const navLinks = [
   { label: "Sale", href: "/sale" },
   { label: "Condoms", href: "/shop?cat=condoms" },
   { label: "Clothing", href: "/shop?cat=clothing" },
+  { label: "Dildo", href: "/shop?cat=dildo" },
+  { label: "Vibrator", href: "/shop?cat=vibrator" },
   { label: "Gift Cards", href: "/gift-cards" },
   { label: "Education", href: "/education" },
   { label: "Contact Us", href: "/contact" },
