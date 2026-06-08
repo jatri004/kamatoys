@@ -187,7 +187,14 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  <Icon />
+                  {/* Snapchat = white ghost with a thin black outline */}
+                  <Icon
+                    style={
+                      label === "Snapchat"
+                        ? { stroke: "#000000", strokeWidth: 0.7, paintOrder: "stroke" }
+                        : undefined
+                    }
+                  />
                 </a>
               ))}
             </div>
