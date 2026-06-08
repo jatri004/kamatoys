@@ -87,6 +87,9 @@ export default async function ProductPage({ params }: Props) {
         <div>
           {/* Badges */}
           <div className="flex flex-wrap gap-2 mb-3">
+            <span className="bg-black text-white text-xs font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full ring-1 ring-white/20">
+              18+ Adults Only
+            </span>
             {product.isSale && (
               <span className="bg-red-100 text-red-600 text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
                 Sale — {discount}% off

@@ -53,6 +53,15 @@ export default function ProductCard({ product }: Props) {
               </span>
             )}
           </div>
+
+          {/* 18+ age badge — shown on every product listing */}
+          <span
+            className="absolute bottom-2 left-2 inline-flex items-center justify-center bg-black/90 text-white text-[11px] font-extrabold leading-none px-2 py-1 rounded-md ring-1 ring-white/30"
+            aria-label="18 plus only"
+            title="Adults only — 18+"
+          >
+            18+
+          </span>
         </div>
       </Link>
 

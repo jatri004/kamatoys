@@ -6,6 +6,8 @@ import { useCart } from "@/lib/cart";
 import { ShieldCheck, Lock, Tag, Gift, Heart } from "lucide-react";
 import { FaApplePay, FaGooglePay, FaPaypal, FaCcVisa, FaCcMastercard, FaCcAmex } from "react-icons/fa6";
 import { SiKlarna, SiAfterpay } from "react-icons/si";
+import AgeVerifyGate from "@/components/AgeVerifyGate";
+import type { AgeResult } from "@/lib/age";
 
 type PayMethod = "card" | "paypal" | "applepay" | "googlepay" | "klarna" | "clearpay";
 
@@ -26,6 +28,36 @@ export default function CheckoutPage() {
   const [giftMsg, setGiftMsg] = useState("");
 
   const [donation, setDonation] = useState(0);
+
+  // --- Age gate (18+) ---
+  const [ageResult, setAgeResult] = useState<AgeResult | null>(null);
+  const [declared, setDeclared] = useState(false);
+  const [declaredAt, setDeclaredAt] = useState<string | null>(null);
+  const ageVerified = ageResult?.pass === true;
+  const canPay = ageVerified && declared; // both required before any payment
+
+  const onDeclare = (checked: boolean) => {
+    setDeclared(checked);
+    setDeclaredAt(checked ? new Date().toISOString() : null);
+  };
+
+  const placeOrder = () => {
+    if (!canPay) return;
+    // Attach the age-verification + declaration to the order record.
+    // (Front-end demo: persisted locally; in production this is recorded
+    //  server-side against the real order.)
+    try {
+      localStorage.setItem(
+        "kd_last_order_age",
+        JSON.stringify({
+          ageVerification: ageResult,
+          declaration: { accepted: declared, acceptedAt: declaredAt },
+        })
+      );
+    } catch {}
+    clearCart();
+    setPlaced(true);
+  };
 
   const shipping = totalPrice >= 40 ? 0 : 3.99;
   const promoDiscount = totalPrice * promoPct;
@@ -90,26 +122,56 @@ export default function CheckoutPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Form column */}
         <form
-          onSubmit={(e) => { e.preventDefault(); clearCart(); setPlaced(true); }}
+          onSubmit={(e) => { e.preventDefault(); placeOrder(); }}
           className="lg:col-span-2 space-y-6"
         >
+          {/* Age verification (18+) — must pass before any payment */}
+          <section className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm space-y-4">
+            <div className="flex items-center gap-2">
+              <h2 className="font-display font-bold text-lg">Age Verification</h2>
+              <span className="bg-black text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded">18+</span>
+            </div>
+            <p className="text-sm text-gray-500">
+              These are adult products. UK law requires us to verify you are 18 or over before you can buy.
+            </p>
+
+            <AgeVerifyGate onResult={setAgeResult} />
+
+            <label className="flex items-start gap-3 cursor-pointer pt-1">
+              <input
+                type="checkbox"
+                checked={declared}
+                onChange={(e) => onDeclare(e.target.checked)}
+                className="mt-0.5 w-4 h-4 rounded border-gray-300 accent-blush-500"
+              />
+              <span className="text-sm text-gray-700">
+                I declare that I am <strong>18 years of age or older</strong>.
+              </span>
+            </label>
+          </section>
+
           {/* Express / fast checkout */}
           <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
             <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-3">Express Checkout</h2>
             <div className="grid grid-cols-3 gap-3">
-              <button type="button" onClick={() => { clearCart(); setPlaced(true); }}
-                className="flex items-center justify-center bg-black text-white rounded-xl py-3 hover:bg-gray-800" aria-label="Pay with Apple Pay">
+              <button type="button" disabled={!canPay} onClick={placeOrder}
+                className="flex items-center justify-center bg-black text-white rounded-xl py-3 hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Pay with Apple Pay">
                 <FaApplePay className="text-3xl" />
               </button>
-              <button type="button" onClick={() => { clearCart(); setPlaced(true); }}
-                className="flex items-center justify-center bg-black text-white rounded-xl py-3 hover:bg-gray-800" aria-label="Pay with Google Pay">
+              <button type="button" disabled={!canPay} onClick={placeOrder}
+                className="flex items-center justify-center bg-black text-white rounded-xl py-3 hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Pay with Google Pay">
                 <FaGooglePay className="text-3xl" />
               </button>
-              <button type="button" onClick={() => { clearCart(); setPlaced(true); }}
-                className="flex items-center justify-center bg-[#FFC439] text-[#003087] rounded-xl py-3 hover:brightness-95" aria-label="Pay with PayPal">
+              <button type="button" disabled={!canPay} onClick={placeOrder}
+                className="flex items-center justify-center bg-[#FFC439] text-[#003087] rounded-xl py-3 hover:brightness-95 disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Pay with PayPal">
                 <FaPaypal className="text-2xl" />
               </button>
             </div>
+            {!canPay && (
+              <p className="text-xs text-amber-600 mt-3">
+                Complete age verification and tick the 18+ declaration to enable payment.
+              </p>
+            )}
             <div className="flex items-center gap-3 mt-5">
               <div className="h-px bg-gray-200 flex-1" />
               <span className="text-xs text-gray-400">or pay another way</span>
@@ -228,9 +290,18 @@ export default function CheckoutPage() {
               </PayOption>
             </div>
 
-            <button type="submit" className="mt-5 w-full bg-wine-800 text-white font-bold py-3.5 rounded-xl hover:bg-wine-900">
-              Pay £{total.toFixed(2)}
+            <button
+              type="submit"
+              disabled={!canPay}
+              className="mt-5 w-full bg-wine-800 text-white font-bold py-3.5 rounded-xl hover:bg-wine-900 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {canPay ? `Pay £${total.toFixed(2)}` : "Verify age (18+) to pay"}
             </button>
+            {!canPay && (
+              <p className="text-xs text-amber-600 text-center mt-2">
+                Payment is locked until you pass age verification and tick the 18+ declaration.
+              </p>
+            )}
             <p className="text-xs text-gray-400 text-center mt-3 flex items-center justify-center gap-1">
               <ShieldCheck size={12} /> Secure, encrypted payment · Discreet billing
             </p>
