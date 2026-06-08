@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import CharityNote from "@/components/CharityNote";
+import HeroBanner from "@/components/HeroBanner";
 import {
   ShieldCheck,
   Truck,
@@ -136,18 +137,11 @@ export default async function HomePage() {
         className="relative overflow-hidden bg-wine-950 text-white"
         aria-label="Hero banner"
       >
-        {/* Background photo */}
-        <Image
-          src="/images/hero.png"
-          alt="KamaDesires.com — premium intimate wellness lifestyle"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-left md:object-center"
-        />
+        {/* Background photos — 4 across on desktop, sliding carousel on mobile */}
+        <HeroBanner />
         {/* Readability overlay — darker on the left where the text sits */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/25" />
-        <div className="absolute inset-0 bg-black/20 md:bg-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/30 pointer-events-none" />
+        <div className="absolute inset-0 bg-black/25 md:bg-transparent pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 lg:py-44">
           <div className="max-w-xl">
