@@ -133,24 +133,32 @@ export default async function HomePage() {
     <>
       {/* Hero */}
       <section
-        className="relative overflow-hidden bg-wine-900 text-white"
+        className="relative overflow-hidden bg-wine-950 text-white"
         aria-label="Hero banner"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-wine-800 via-wine-900 to-wine-950" />
-        {/* Decorative gold glow */}
-        <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-gold-400/15 blur-3xl" />
-        <div className="absolute -bottom-20 left-1/4 w-64 h-64 rounded-full bg-wine-400/20 blur-3xl" />
+        {/* Background photo */}
+        <Image
+          src="/images/hero.png"
+          alt="KamaDesires.com — premium intimate wellness lifestyle"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-left md:object-center"
+        />
+        {/* Readability overlay — darker on the left where the text sits */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/25" />
+        <div className="absolute inset-0 bg-black/20 md:bg-transparent" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-36">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 lg:py-44">
           <div className="max-w-xl">
-            <p className="text-gold-400 text-sm font-semibold uppercase tracking-widest mb-3">
+            <p className="text-gold-300 text-sm font-semibold uppercase tracking-widest mb-3 drop-shadow">
               Inclusive · Discreet · Premium
             </p>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6 drop-shadow-lg">
               Pleasure,{" "}
               <span className="gold-text">beautifully</span> designed.
             </h1>
-            <p className="text-wine-100/80 text-lg mb-8 leading-relaxed">
+            <p className="text-gray-100/95 text-lg mb-8 leading-relaxed drop-shadow">
               Premium intimate wellness for every body. Free discreet UK delivery.
               Expert guides. Always shame-free.
             </p>
