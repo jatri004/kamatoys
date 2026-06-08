@@ -3,7 +3,6 @@ import Image from "next/image";
 import NewsletterForm from "./NewsletterForm";
 import {
   FaYoutube,
-  FaSnapchat,
   FaFacebook,
   FaInstagram,
   FaTiktok,
@@ -16,7 +15,7 @@ import {
   FaCcApplePay,
   FaGooglePay,
 } from "react-icons/fa6";
-import { SiKlarna } from "react-icons/si";
+import { SiKlarna, SiSnapchat } from "react-icons/si";
 import { Package, Truck, ShieldCheck } from "lucide-react";
 
 const customerService = [
@@ -49,7 +48,7 @@ const companyLinks = [
 const socialLinks = [
   { icon: FaYoutube, label: "YouTube", href: "https://www.youtube.com/@Kamadesires", color: "#FF0000" },
   // Snapchat is a white ghost on its signature yellow chip.
-  { icon: FaSnapchat, label: "Snapchat", href: "https://www.snapchat.com/@kamadesires", color: "#FFFFFF", bg: "#FFFC00" },
+  { icon: SiSnapchat, label: "Snapchat", href: "https://www.snapchat.com/@kamadesires", color: "#FFFFFF", bg: "#FFFC00" },
   { icon: FaFacebook, label: "Facebook", href: "#", color: "#1877F2" },
   { icon: FaInstagram, label: "Instagram", href: "https://www.instagram.com/kamadesires/", color: "#E4405F" },
   { icon: FaTiktok, label: "TikTok", href: "https://www.tiktok.com/@kamadesires", color: "#000000" },
