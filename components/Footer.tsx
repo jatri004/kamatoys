@@ -4,7 +4,6 @@ import NewsletterForm from "./NewsletterForm";
 import {
   FaYoutube,
   FaSnapchat,
-  FaFacebook,
   FaInstagram,
   FaTiktok,
   FaPinterest,
@@ -47,14 +46,13 @@ const companyLinks = [
 ];
 
 const socialLinks = [
-  { icon: FaYoutube, label: "YouTube", href: "#", color: "#FF0000" },
+  { icon: FaYoutube, label: "YouTube", href: "https://www.youtube.com/@Kamadesires", color: "#FF0000" },
   // Snapchat is a white ghost on its signature yellow chip.
-  { icon: FaSnapchat, label: "Snapchat", href: "#", color: "#FFFFFF", bg: "#FFFC00" },
-  { icon: FaFacebook, label: "Facebook", href: "#", color: "#1877F2" },
-  { icon: FaInstagram, label: "Instagram", href: "#", color: "#E4405F" },
-  { icon: FaTiktok, label: "TikTok", href: "#", color: "#000000" },
-  { icon: FaPinterest, label: "Pinterest", href: "#", color: "#E60023" },
-  { icon: FaXTwitter, label: "X (Twitter)", href: "#", color: "#000000" },
+  { icon: FaSnapchat, label: "Snapchat", href: "https://www.snapchat.com/@kamadesires", color: "#FFFFFF", bg: "#FFFC00" },
+  { icon: FaInstagram, label: "Instagram", href: "https://www.instagram.com/kamadesires/", color: "#E4405F" },
+  { icon: FaTiktok, label: "TikTok", href: "https://www.tiktok.com/@kamadesires", color: "#000000" },
+  { icon: FaPinterest, label: "Pinterest", href: "https://www.pinterest.com/kamadesires/", color: "#E60023" },
+  { icon: FaXTwitter, label: "X (Twitter)", href: "https://x.com/kamadesires", color: "#000000" },
 ];
 
 // Payment icons sit on white chips so brand colours (e.g. Visa navy) stay
