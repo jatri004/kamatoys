@@ -4,6 +4,7 @@ import NewsletterForm from "./NewsletterForm";
 import {
   FaYoutube,
   FaSnapchat,
+  FaFacebook,
   FaInstagram,
   FaTiktok,
   FaPinterest,
@@ -49,6 +50,7 @@ const socialLinks = [
   { icon: FaYoutube, label: "YouTube", href: "https://www.youtube.com/@Kamadesires", color: "#FF0000" },
   // Snapchat is a white ghost on its signature yellow chip.
   { icon: FaSnapchat, label: "Snapchat", href: "https://www.snapchat.com/@kamadesires", color: "#FFFFFF", bg: "#FFFC00" },
+  { icon: FaFacebook, label: "Facebook", href: "#", color: "#1877F2" },
   { icon: FaInstagram, label: "Instagram", href: "https://www.instagram.com/kamadesires/", color: "#E4405F" },
   { icon: FaTiktok, label: "TikTok", href: "https://www.tiktok.com/@kamadesires", color: "#000000" },
   { icon: FaPinterest, label: "Pinterest", href: "https://www.pinterest.com/kamadesires/", color: "#E60023" },
@@ -186,14 +188,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  {/* Snapchat = white ghost with a black outline (official look) */}
-                  <Icon
-                    style={
-                      label === "Snapchat"
-                        ? { stroke: "#000000", strokeWidth: 16, paintOrder: "stroke" }
-                        : undefined
-                    }
-                  />
+                  <Icon />
                 </a>
               ))}
             </div>
