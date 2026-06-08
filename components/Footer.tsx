@@ -124,7 +124,11 @@ export default function Footer() {
           {/* Social + Payment */}
           <div className="mt-10 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
             {/* Social — brand colours on chips for clear visibility */}
-            <div className="flex items-center gap-2.5">
+            <div className="flex flex-col items-center sm:items-start gap-3">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400">
+                Follow Us
+              </h3>
+              <div className="flex items-center gap-2.5">
               {socialLinks.map(({ icon: Icon, label, href, color, bg }) => (
                 <a
                   key={label}
@@ -145,6 +149,7 @@ export default function Footer() {
                   />
                 </a>
               ))}
+              </div>
             </div>
 
             {/* Payment icons — brand colours on white chips */}
