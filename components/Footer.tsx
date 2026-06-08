@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import NewsletterForm from "./NewsletterForm";
+import FooterLinkGroup from "./FooterLinkGroup";
 import {
   FaYoutube,
   FaFacebook,
@@ -103,66 +104,13 @@ export default function Footer() {
       {/* Main footer content */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-            {/* Customer Service */}
-            <div>
-              <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
-                Customer Service
-              </h3>
-              <ul className="space-y-2">
-                {customerService.map((l) => (
-                  <li key={l.label}>
-                    <Link
-                      href={l.href}
-                      className="text-sm text-gray-300 hover:text-white transition-colors"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Shop */}
-            <div>
-              <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
-                Shop
-              </h3>
-              <ul className="space-y-2">
-                {shopLinks.map((l) => (
-                  <li key={l.label}>
-                    <Link
-                      href={l.href}
-                      className="text-sm text-gray-300 hover:text-white transition-colors"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Company */}
-            <div>
-              <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
-                Company
-              </h3>
-              <ul className="space-y-2">
-                {companyLinks.map((l) => (
-                  <li key={l.label}>
-                    <Link
-                      href={l.href}
-                      className="text-sm text-gray-300 hover:text-white transition-colors"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-2 md:gap-y-10">
+            <FooterLinkGroup heading="Customer Service" links={customerService} />
+            <FooterLinkGroup heading="Shop" links={shopLinks} />
+            <FooterLinkGroup heading="Company" links={companyLinks} />
 
             {/* Newsletter */}
-            <div>
+            <div className="pt-6 md:pt-0">
               <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
                 Newsletter
               </h3>
