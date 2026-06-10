@@ -11,6 +11,8 @@ import {
   Menu,
   X,
   ChevronDown,
+  ChevronRight,
+  ChevronLeft,
 } from "lucide-react";
 import { useCart } from "@/lib/cart";
 import { useWishlist } from "@/lib/wishlist";
@@ -74,7 +76,14 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
-  const [mobileGroup, setMobileGroup] = useState<string | null>(null);
+  const [mobileSection, setMobileSection] = useState<string | null>(null);
+  const [mobileGroupOpen, setMobileGroupOpen] = useState<string | null>(null);
+
+  const closeMobile = () => {
+    setMobileOpen(false);
+    setMobileSection(null);
+    setMobileGroupOpen(null);
+  };
   const [searchQuery, setSearchQuery] = useState("");
 
   // Rotating faded search suggestions
@@ -190,7 +199,7 @@ export default function Navbar() {
 
               {/* Mobile menu toggle */}
               <button
-                onClick={() => setMobileOpen(!mobileOpen)}
+                onClick={() => (mobileOpen ? closeMobile() : setMobileOpen(true))}
                 className="p-2 text-gray-600 hover:text-black md:hidden"
                 aria-label={mobileOpen ? "Close menu" : "Open menu"}
               >
@@ -297,77 +306,111 @@ export default function Navbar() {
           </div>
         </nav>
 
-        {/* Mobile nav drawer */}
+        {/* Mobile nav drawer — drill-down panels (slide + Back) */}
         {mobileOpen && (
-          <div className="md:hidden border-t border-gray-100 bg-white">
+          <div className="md:hidden border-t border-gray-100 bg-white overflow-hidden">
             <nav aria-label="Mobile navigation">
-              {navLinks.map((link) =>
-                link.dropdown ? (
-                  // Collapsible "Shop" accordion (collapsed by default)
-                  <div key={link.label} className="border-b border-gray-50">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setMobileGroup((g) => (g === link.label ? null : link.label))
-                      }
-                      aria-expanded={mobileGroup === link.label}
-                      className="flex w-full items-center justify-between px-6 py-3 text-sm font-medium text-gray-800"
-                    >
-                      {link.label}
-                      <ChevronDown
-                        size={16}
-                        className={`text-gray-400 transition-transform ${
-                          mobileGroup === link.label ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-                    {mobileGroup === link.label && (
-                      <div className="bg-gray-50 pb-3">
-                        {link.dropdown.map((group) => (
-                          <div key={group.heading}>
-                            <p className="px-6 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                              {group.heading}
-                            </p>
-                            <div className="grid grid-cols-2">
-                              {group.links.map((sub) => (
-                                <Link
-                                  key={sub.label}
-                                  href={sub.href}
-                                  onClick={() => setMobileOpen(false)}
-                                  className={`block px-6 py-2 text-sm hover:text-blush-500 ${
-                                    sub.label === "Sale"
-                                      ? "text-red-600 font-semibold"
-                                      : sub.label === "LGBTQ+"
-                                      ? "rainbow-text font-semibold"
-                                      : "text-gray-600"
-                                  }`}
-                                >
-                                  {sub.label}
-                                </Link>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+              {(() => {
+                const section = navLinks.find((l) => l.label === mobileSection);
+                const group = section?.dropdown?.find((g) => g.heading === mobileGroupOpen);
+
+                // Level 2 — links inside a group
+                if (section && group) {
+                  return (
+                    <div key="group" className="animate-slide-in">
+                      <button
+                        type="button"
+                        onClick={() => setMobileGroupOpen(null)}
+                        className="flex items-center gap-1.5 w-full px-5 py-3 text-sm font-semibold text-gray-800 border-b border-gray-100"
+                      >
+                        <ChevronLeft size={16} /> Back
+                      </button>
+                      <p className="px-6 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                        {group.heading}
+                      </p>
+                      {group.links.map((sub) => (
+                        <Link
+                          key={sub.label}
+                          href={sub.href}
+                          onClick={closeMobile}
+                          className={`block px-6 py-3 text-sm border-b border-gray-50 hover:text-blush-500 ${
+                            sub.label === "Sale"
+                              ? "text-red-600 font-semibold"
+                              : sub.label === "LGBTQ+"
+                              ? "rainbow-text font-semibold"
+                              : "text-gray-700"
+                          }`}
+                        >
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  );
+                }
+
+                // Level 1 — groups inside a section (e.g. Shop)
+                if (section?.dropdown) {
+                  return (
+                    <div key="section" className="animate-slide-in">
+                      <button
+                        type="button"
+                        onClick={() => setMobileSection(null)}
+                        className="flex items-center gap-1.5 w-full px-5 py-3 text-sm font-semibold text-gray-800 border-b border-gray-100"
+                      >
+                        <ChevronLeft size={16} /> Back
+                      </button>
+                      <p className="px-6 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                        {section.label}
+                      </p>
+                      {section.dropdown.map((g) => (
+                        <button
+                          key={g.heading}
+                          type="button"
+                          onClick={() => setMobileGroupOpen(g.heading)}
+                          className="flex items-center justify-between w-full px-6 py-3 text-sm font-medium text-gray-800 border-b border-gray-50"
+                        >
+                          {g.heading}
+                          <ChevronRight size={16} className="text-gray-400" />
+                        </button>
+                      ))}
+                    </div>
+                  );
+                }
+
+                // Level 0 — root
+                return (
+                  <div key="root">
+                    {navLinks.map((link) =>
+                      link.dropdown ? (
+                        <button
+                          key={link.label}
+                          type="button"
+                          onClick={() => setMobileSection(link.label)}
+                          className="flex items-center justify-between w-full px-6 py-3 text-sm font-medium text-gray-800 border-b border-gray-50"
+                        >
+                          {link.label}
+                          <ChevronRight size={16} className="text-gray-400" />
+                        </button>
+                      ) : (
+                        <Link
+                          key={link.label}
+                          href={link.href}
+                          onClick={closeMobile}
+                          className={`block px-6 py-3 text-sm font-medium border-b border-gray-50 ${
+                            link.label === "Sale"
+                              ? "text-red-600"
+                              : link.label === "LGBTQ+"
+                              ? "rainbow-text"
+                              : "text-gray-800"
+                          }`}
+                        >
+                          {link.label}
+                        </Link>
+                      )
                     )}
                   </div>
-                ) : (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className={`block px-6 py-3 text-sm font-medium border-b border-gray-50 ${
-                      link.label === "Sale"
-                        ? "text-red-600"
-                        : link.label === "LGBTQ+"
-                        ? "rainbow-text"
-                        : "text-gray-800"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                )
-              )}
+                );
+              })()}
             </nav>
           </div>
         )}
