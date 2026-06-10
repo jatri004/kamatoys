@@ -74,6 +74,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
+  const [mobileGroup, setMobileGroup] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   // Rotating faded search suggestions
@@ -300,9 +301,59 @@ export default function Navbar() {
         {mobileOpen && (
           <div className="md:hidden border-t border-gray-100 bg-white">
             <nav aria-label="Mobile navigation">
-              {navLinks.map((link) => (
-                <div key={link.label}>
+              {navLinks.map((link) =>
+                link.dropdown ? (
+                  // Collapsible "Shop" accordion (collapsed by default)
+                  <div key={link.label} className="border-b border-gray-50">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setMobileGroup((g) => (g === link.label ? null : link.label))
+                      }
+                      aria-expanded={mobileGroup === link.label}
+                      className="flex w-full items-center justify-between px-6 py-3 text-sm font-medium text-gray-800"
+                    >
+                      {link.label}
+                      <ChevronDown
+                        size={16}
+                        className={`text-gray-400 transition-transform ${
+                          mobileGroup === link.label ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                    {mobileGroup === link.label && (
+                      <div className="bg-gray-50 pb-3">
+                        {link.dropdown.map((group) => (
+                          <div key={group.heading}>
+                            <p className="px-6 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                              {group.heading}
+                            </p>
+                            <div className="grid grid-cols-2">
+                              {group.links.map((sub) => (
+                                <Link
+                                  key={sub.label}
+                                  href={sub.href}
+                                  onClick={() => setMobileOpen(false)}
+                                  className={`block px-6 py-2 text-sm hover:text-blush-500 ${
+                                    sub.label === "Sale"
+                                      ? "text-red-600 font-semibold"
+                                      : sub.label === "LGBTQ+"
+                                      ? "rainbow-text font-semibold"
+                                      : "text-gray-600"
+                                  }`}
+                                >
+                                  {sub.label}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
                   <Link
+                    key={link.label}
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
                     className={`block px-6 py-3 text-sm font-medium border-b border-gray-50 ${
@@ -315,29 +366,8 @@ export default function Navbar() {
                   >
                     {link.label}
                   </Link>
-                  {link.dropdown && (
-                    <div className="bg-gray-50">
-                      {link.dropdown.map((group) => (
-                        <div key={group.heading}>
-                          <p className="px-6 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                            {group.heading}
-                          </p>
-                          {group.links.map((sub) => (
-                            <Link
-                              key={sub.label}
-                              href={sub.href}
-                              onClick={() => setMobileOpen(false)}
-                              className="block px-10 py-2.5 text-sm text-gray-600 border-b border-gray-100 hover:text-blush-500"
-                            >
-                              {sub.label}
-                            </Link>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+                )
+              )}
             </nav>
           </div>
         )}
