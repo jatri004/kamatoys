@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "email_not_configured" }, { status: 503 });
   }
 
-  const host = process.env.SMTP_HOST || "smtppro.zoho.com";
+  const host = process.env.SMTP_HOST || "smtppro.zoho.eu";
   const port = Number(process.env.SMTP_PORT || 465);
   const to = process.env.CONTACT_TO || user;
 
