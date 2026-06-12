@@ -36,9 +36,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "email_not_configured" }, { status: 503 });
   }
 
-  const host = process.env.SMTP_HOST || "smtppro.zoho.eu";
+  // smtp.zoho.eu = EU data center, personal/individual mailbox (jatinatri@zoho.eu).
+  // (smtppro.zoho.eu is only for paid org custom-domain mailboxes.)
+  const host = process.env.SMTP_HOST || "smtp.zoho.eu";
   const port = Number(process.env.SMTP_PORT || 465);
-  const to = process.env.CONTACT_TO || user;
+  // Deliver to the kamadesires.com group so the whole team receives it. We
+  // authenticate as the real mailbox (SMTP_USER) but send TO the group.
+  const to = process.env.CONTACT_TO || "hello@kamadesires.com";
 
   let body: Record<string, unknown>;
   try {
