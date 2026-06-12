@@ -1,16 +1,22 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 // Server-side: receive a contact-form submission and email it to the shop
-// inbox via Resend. The RESEND_API_KEY is server-only and never exposed to the
-// browser. Set it in .env.local (local) and in Vercel project settings (prod).
-
-// Where contact submissions are delivered, and the verified sender address.
-// On Resend's free tier you can send FROM "onboarding@resend.dev" to the email
-// you signed up with. Once you verify kamadesires.com in Resend, swap CONTACT_FROM
-// to something like "Kamatoys <contact@kamadesires.com>".
-const CONTACT_TO = process.env.CONTACT_TO || "hello@kamadesires.com";
-const CONTACT_FROM = process.env.CONTACT_FROM || "Kamatoys Contact <onboarding@resend.dev>";
+// inbox via Zoho SMTP. All SMTP credentials are server-only and never exposed
+// to the browser. Set them in .env.local (local) and in Vercel project
+// settings (prod).
+//
+// Required env vars:
+//   SMTP_USER  - your Zoho mailbox, e.g. hello@kamadesires.com
+//   SMTP_PASS  - a Zoho "App Password" (Zoho → Settings → Security → App Passwords)
+// Optional (defaults shown):
+//   SMTP_HOST  - smtppro.zoho.com   (use smtp.zoho.com for free personal accounts;
+//                                     use the .eu / .in variant for your region)
+//   SMTP_PORT  - 465                (SSL; use 587 for STARTTLS)
+//   CONTACT_TO - defaults to SMTP_USER (where submissions are delivered)
+//
+// Node SMTP needs the Node.js runtime (not Edge).
+export const runtime = "nodejs";
 
 function escapeHtml(value: string): string {
   return value
@@ -22,10 +28,15 @@ function escapeHtml(value: string): string {
 }
 
 export async function POST(request: Request) {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+  if (!user || !pass) {
     return NextResponse.json({ error: "email_not_configured" }, { status: 503 });
   }
+
+  const host = process.env.SMTP_HOST || "smtppro.zoho.com";
+  const port = Number(process.env.SMTP_PORT || 465);
+  const to = process.env.CONTACT_TO || user;
 
   let body: Record<string, unknown>;
   try {
@@ -71,24 +82,27 @@ export async function POST(request: Request) {
   `;
 
   try {
-    const resend = new Resend(apiKey);
-    const { error } = await resend.emails.send({
-      from: CONTACT_FROM,
-      to: CONTACT_TO,
+    const transporter = nodemailer.createTransport({
+      host,
+      port,
+      secure: port === 465, // true for 465 (SSL), false for 587 (STARTTLS)
+      auth: { user, pass },
+    });
+
+    await transporter.sendMail({
+      // Zoho requires the From address to be the authenticated mailbox (or an
+      // alias of it); the visitor's address goes in Reply-To instead.
+      from: `"Kamatoys Contact" <${user}>`,
+      to,
       replyTo: email,
       subject: `[Contact] ${subject} — ${fullName}`,
       text: lines.join("\n"),
       html,
     });
 
-    if (error) {
-      console.error("Resend error:", error);
-      return NextResponse.json({ error: "send_failed" }, { status: 502 });
-    }
-
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error("Contact send exception:", err);
+    console.error("Contact send failed:", err);
     return NextResponse.json({ error: "send_failed" }, { status: 502 });
   }
 }
