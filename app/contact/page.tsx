@@ -31,11 +31,17 @@ export default function ContactPage() {
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
-        throw new Error(`Request failed (${res.status})`);
+        // TEMP DEBUG: show the server's error detail on screen for diagnosis.
+        const info = await res.json().catch(() => ({}));
+        const debug = [info.error, info.detail].filter(Boolean).join(" — ");
+        throw new Error(debug || `Request failed (${res.status})`);
       }
       setSent(true);
-    } catch {
-      setError("Sorry, your message couldn't be sent. Please try again or email us directly.");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "";
+      setError(
+        `Sorry, your message couldn't be sent. Please try again or email us directly.${msg ? ` [debug: ${msg}]` : ""}`
+      );
     } finally {
       setSending(false);
     }

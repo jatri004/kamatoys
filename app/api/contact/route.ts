@@ -103,6 +103,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Contact send failed:", err);
-    return NextResponse.json({ error: "send_failed" }, { status: 502 });
+    // TEMP DEBUG: surface the SMTP error so we can diagnose from the browser.
+    // Remove `detail` once the form is confirmed working.
+    const e = err as { code?: string; responseCode?: number; message?: string };
+    const detail = [e.code, e.responseCode, e.message].filter(Boolean).join(" | ");
+    return NextResponse.json({ error: "send_failed", detail }, { status: 502 });
   }
 }
