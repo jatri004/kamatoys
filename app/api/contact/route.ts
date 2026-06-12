@@ -28,8 +28,10 @@ function escapeHtml(value: string): string {
 }
 
 export async function POST(request: Request) {
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
+  const user = process.env.SMTP_USER?.trim();
+  // Zoho shows app passwords in space-separated groups; the real password has
+  // no spaces. Strip any whitespace so a copy-paste-with-spaces still works.
+  const pass = process.env.SMTP_PASS?.replace(/\s+/g, "");
   if (!user || !pass) {
     return NextResponse.json({ error: "email_not_configured" }, { status: 503 });
   }
