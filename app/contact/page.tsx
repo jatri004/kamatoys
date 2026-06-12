@@ -5,10 +5,40 @@ import { Send, CheckCircle } from "lucide-react";
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSent(true);
+    setError(null);
+    setSending(true);
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const payload = {
+      firstName: data.get("first-name"),
+      lastName: data.get("last-name"),
+      email: data.get("email"),
+      orderNumber: data.get("order-number"),
+      subject: data.get("subject"),
+      message: data.get("message"),
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        throw new Error(`Request failed (${res.status})`);
+      }
+      setSent(true);
+    } catch {
+      setError("Sorry, your message couldn't be sent. Please try again or email us directly.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -41,26 +71,26 @@ export default function ContactPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="first-name" className="block text-sm font-medium text-gray-700 mb-1.5">First Name</label>
-                  <input id="first-name" type="text" required className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blush-400" />
+                  <input id="first-name" name="first-name" type="text" required className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blush-400" />
                 </div>
                 <div>
                   <label htmlFor="last-name" className="block text-sm font-medium text-gray-700 mb-1.5">Last Name</label>
-                  <input id="last-name" type="text" required className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blush-400" />
+                  <input id="last-name" name="last-name" type="text" required className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blush-400" />
                 </div>
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
-                <input id="email" type="email" required className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blush-400" />
+                <input id="email" name="email" type="email" required className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blush-400" />
               </div>
               <div>
                 <label htmlFor="order-number" className="block text-sm font-medium text-gray-700 mb-1.5">
                   Order Number <span className="text-gray-400 font-normal">(optional)</span>
                 </label>
-                <input id="order-number" type="text" className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blush-400" placeholder="KT-" />
+                <input id="order-number" name="order-number" type="text" className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blush-400" placeholder="KT-" />
               </div>
               <div>
                 <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1.5">Subject</label>
-                <select id="subject" className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blush-400 bg-white">
+                <select id="subject" name="subject" className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blush-400 bg-white">
                   <option>Order Query</option>
                   <option>Delivery Issue</option>
                   <option>Return Request</option>
@@ -70,14 +100,18 @@ export default function ContactPage() {
               </div>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1.5">Message</label>
-                <textarea id="message" rows={5} required className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blush-400 resize-none" />
+                <textarea id="message" name="message" rows={5} required className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blush-400 resize-none" />
               </div>
               <button
                 type="submit"
-                className="w-full flex items-center justify-center gap-2 bg-black text-white font-semibold py-3.5 rounded-xl hover:bg-gray-800"
+                disabled={sending}
+                className="w-full flex items-center justify-center gap-2 bg-black text-white font-semibold py-3.5 rounded-xl hover:bg-gray-800 disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                <Send size={16} /> Send Message
+                <Send size={16} /> {sending ? "Sending…" : "Send Message"}
               </button>
+              {error && (
+                <p className="text-sm text-red-600 text-center">{error}</p>
+              )}
             </form>
           )}
         </div>
