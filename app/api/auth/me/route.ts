@@ -1,16 +1,16 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { getCurrentCustomer } from "@/lib/session";
-import { isShopifyConfigured } from "@/lib/shopify-customer";
+import { isCustomerAuthConfigured } from "@/lib/customer-account";
 
 // Lets client components learn the login state without ever touching the
-// httpOnly token cookie. Returns the customer's display name + email, or null.
-export async function GET() {
-  const customer = await getCurrentCustomer();
+// httpOnly token cookies. Returns the customer's name + email, or null.
+export async function GET(request: NextRequest) {
+  const customer = await getCurrentCustomer(request.nextUrl.origin);
   return NextResponse.json({
-    configured: isShopifyConfigured(),
+    configured: isCustomerAuthConfigured(),
     user: customer
       ? {
-          name: customer.firstName || customer.displayName || customer.email,
+          name: customer.firstName || customer.displayName || customer.email || "there",
           email: customer.email,
         }
       : null,

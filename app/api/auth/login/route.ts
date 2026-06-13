@@ -1,28 +1,29 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { logIn, isShopifyConfigured } from "@/lib/shopify-customer";
-import { setSessionCookie } from "@/lib/session";
+import { isCustomerAuthConfigured, buildAuthorizeUrl } from "@/lib/customer-account";
+import { setLoginFlow } from "@/lib/session";
+import { randomToken, codeChallengeS256 } from "@/lib/pkce";
 
-export async function POST(request: NextRequest) {
-  if (!isShopifyConfigured()) {
-    return NextResponse.json(
-      { error: "Accounts aren't switched on yet." },
-      { status: 503 }
-    );
+// GET /api/auth/login — start the Customer Account API login. Generates PKCE +
+// state, stashes them in short-lived cookies, then redirects to Shopify's
+// hosted login (which handles both returning and brand-new customers).
+export async function GET(request: NextRequest) {
+  const origin = request.nextUrl.origin;
+  const next = request.nextUrl.searchParams.get("next") || "/account";
+
+  if (!isCustomerAuthConfigured()) {
+    return NextResponse.redirect(new URL("/account?auth=unconfigured", origin));
   }
 
-  const { email, password } = await request.json().catch(() => ({}));
-  if (!email || !password) {
-    return NextResponse.json({ error: "Enter your email and password." }, { status: 400 });
-  }
+  const verifier = randomToken(48);
+  const codeChallenge = await codeChallengeS256(verifier);
+  const state = randomToken(24);
 
-  const { token, error } = await logIn({ email, password });
-  if (error || !token) {
-    return NextResponse.json(
-      { error: error || "Incorrect email or password." },
-      { status: 401 }
-    );
-  }
+  await setLoginFlow({ verifier, state, next });
 
-  await setSessionCookie(token);
-  return NextResponse.json({ ok: true });
+  const url = await buildAuthorizeUrl({
+    redirectUri: `${origin}/api/auth/callback`,
+    state,
+    codeChallenge,
+  });
+  return NextResponse.redirect(url);
 }

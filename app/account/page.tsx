@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { MessageCircle, Package, Heart, LogOut } from "lucide-react";
-import { getCurrentCustomer } from "@/lib/session";
-import { isShopifyConfigured } from "@/lib/shopify-customer";
+import { getCurrentCustomer, getRequestOrigin } from "@/lib/session";
+import { isCustomerAuthConfigured } from "@/lib/customer-account";
 import SignOutButton from "@/components/auth/SignOutButton";
 
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ export default async function AccountPage({
 
   // Before Shopify is configured there's no auth at all — show a friendly
   // notice rather than redirect-looping.
-  if (!isShopifyConfigured()) {
+  if (!isCustomerAuthConfigured()) {
     return (
       <div className="mx-auto max-w-md px-4 py-20 text-center">
         <h1 className="text-xl font-bold text-gray-900">Accounts coming soon</h1>
@@ -30,11 +30,14 @@ export default async function AccountPage({
     );
   }
 
-  const customer = await getCurrentCustomer();
+  const customer = await getCurrentCustomer(await getRequestOrigin());
   if (!customer) redirect("/account/login");
 
   const name =
-    customer.firstName || customer.displayName || customer.email.split("@")[0] || "there";
+    customer.firstName ||
+    customer.displayName ||
+    customer.email?.split("@")[0] ||
+    "there";
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">

@@ -1,14 +1,12 @@
 "use client";
 
 import { LogOut } from "lucide-react";
-import { useAuth } from "@/lib/auth";
 
 export default function SignOutButton() {
-  const { signOut } = useAuth();
-
-  async function handleClick() {
-    await signOut();
-    window.location.assign("/");
+  // Navigate (not fetch): the logout route redirects through Shopify's
+  // end-session endpoint and back, which has to happen in the browser.
+  function handleClick() {
+    window.location.assign("/api/auth/logout");
   }
 
   return (

@@ -9,16 +9,15 @@ import {
   useState,
 } from "react";
 
-export type AuthUser = { name: string; email: string };
+export type AuthUser = { name: string; email: string | null };
 
 type AuthState = {
   user: AuthUser | null;
   loading: boolean;
-  // False until the store owner sets the Shopify env vars; lets the UI explain
-  // that accounts aren't switched on yet instead of silently failing.
+  // False until the store owner sets the Customer Account API env vars; lets
+  // the UI explain that accounts aren't switched on yet.
   configured: boolean;
   refresh: () => Promise<void>;
-  signOut: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
@@ -45,14 +44,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     refresh();
   }, [refresh]);
 
-  const signOut = useCallback(async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
-    setUser(null);
-  }, []);
-
   const value = useMemo<AuthState>(
-    () => ({ user, loading, configured, refresh, signOut }),
-    [user, loading, configured, refresh, signOut]
+    () => ({ user, loading, configured, refresh }),
+    [user, loading, configured, refresh]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

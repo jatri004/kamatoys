@@ -14,7 +14,7 @@ const PREFILLED_MESSAGE = "Hi KamaDesires, I have a question about ";
 export async function GET(request: NextRequest) {
   const origin = request.nextUrl.origin;
 
-  const customer = await getCurrentCustomer();
+  const customer = await getCurrentCustomer(origin);
   if (!customer) {
     const loginUrl = new URL("/account/login", origin);
     loginUrl.searchParams.set("next", "/api/whatsapp/launch");
