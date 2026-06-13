@@ -22,9 +22,12 @@ export function isShopifyConfigured(): boolean {
 interface ShopifyFetchOptions {
   query: string;
   variables?: Record<string, unknown>;
+  // Customer auth (login, tokens, per-user data) must never be cached. Pass
+  // cache: "no-store" for those; product reads keep the default revalidate.
+  cache?: RequestCache;
 }
 
-export async function shopifyFetch<T>({ query, variables }: ShopifyFetchOptions): Promise<T> {
+export async function shopifyFetch<T>({ query, variables, cache }: ShopifyFetchOptions): Promise<T> {
   if (!isShopifyConfigured()) {
     throw new Error("Shopify is not configured (missing SHOPIFY_STORE_DOMAIN / SHOPIFY_STOREFRONT_TOKEN).");
   }
@@ -36,8 +39,8 @@ export async function shopifyFetch<T>({ query, variables }: ShopifyFetchOptions)
       "X-Shopify-Storefront-Access-Token": TOKEN as string,
     },
     body: JSON.stringify({ query, variables }),
-    // Revalidate product data periodically; tune as needed.
-    next: { revalidate: 60 },
+    // Per-request override (no-store for auth) or periodic product revalidation.
+    ...(cache ? { cache } : { next: { revalidate: 60 } }),
   });
 
   if (!res.ok) {

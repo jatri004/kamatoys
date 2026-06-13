@@ -2,16 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import AuthShell from "@/components/auth/AuthShell";
-import GoogleButton from "@/components/auth/GoogleButton";
 
 export default function LoginForm() {
-  const router = useRouter();
   const params = useSearchParams();
-  const { configured } = useAuth();
+  const { configured, refresh } = useAuth();
 
   const next = params.get("next") || "/account";
   const reason = params.get("reason");
@@ -24,19 +21,23 @@ export default function LoginForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    const supabase = createClient();
-    if (!supabase) {
-      setError("Accounts aren't switched on yet. Please check back soon.");
-      return;
-    }
     setSubmitting(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setSubmitting(false);
-    if (error) {
-      setError(error.message);
+
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setSubmitting(false);
+      setError(data.error || "Incorrect email or password.");
       return;
     }
-    // Full navigation so server components pick up the new session cookies.
+
+    await refresh();
+    // Full navigation so server components pick up the new session cookie.
     window.location.assign(next);
   }
 
@@ -54,14 +55,6 @@ export default function LoginForm() {
           Customer accounts aren&apos;t configured yet.
         </p>
       )}
-
-      <GoogleButton next={next} label="Continue with Google" />
-
-      <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-wider text-gray-400">
-        <span className="h-px flex-1 bg-gray-200" />
-        or
-        <span className="h-px flex-1 bg-gray-200" />
-      </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

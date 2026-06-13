@@ -2,65 +2,57 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
 } from "react";
-import type { User } from "@supabase/supabase-js";
-import { createClient } from "@/lib/supabase/client";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+
+export type AuthUser = { name: string; email: string };
 
 type AuthState = {
-  user: User | null;
+  user: AuthUser | null;
   loading: boolean;
-  // False until the site owner adds Supabase keys; lets the UI explain that
-  // accounts aren't switched on yet instead of silently failing.
+  // False until the store owner sets the Shopify env vars; lets the UI explain
+  // that accounts aren't switched on yet instead of silently failing.
   configured: boolean;
+  refresh: () => Promise<void>;
   signOut: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [configured, setConfigured] = useState(true);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const supabase = createClient();
-    if (!supabase) {
-      setLoading(false);
-      return;
-    }
-
-    // Initial fetch, then live updates on login/logout/token refresh.
-    supabase.auth.getUser().then(({ data }) => {
+  const refresh = useCallback(async () => {
+    try {
+      const res = await fetch("/api/auth/me", { cache: "no-store" });
+      const data = await res.json();
       setUser(data.user ?? null);
+      setConfigured(Boolean(data.configured));
+    } catch {
+      setUser(null);
+    } finally {
       setLoading(false);
-    });
+    }
+  }, []);
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
 
-    return () => subscription.unsubscribe();
+  const signOut = useCallback(async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    setUser(null);
   }, []);
 
   const value = useMemo<AuthState>(
-    () => ({
-      user,
-      loading,
-      configured: isSupabaseConfigured,
-      async signOut() {
-        const supabase = createClient();
-        await supabase?.auth.signOut();
-        setUser(null);
-      },
-    }),
-    [user, loading]
+    () => ({ user, loading, configured, refresh, signOut }),
+    [user, loading, configured, refresh, signOut]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -3,14 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/lib/auth";
 import AuthShell from "@/components/auth/AuthShell";
-import GoogleButton from "@/components/auth/GoogleButton";
 
 export default function SignupForm() {
   const params = useSearchParams();
-  const { configured } = useAuth();
+  const { configured, refresh } = useAuth();
   const next = params.get("next") || "/account";
 
   const [name, setName] = useState("");
@@ -18,7 +16,6 @@ export default function SignupForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [done, setDone] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -29,51 +26,22 @@ export default function SignupForm() {
       return;
     }
 
-    const supabase = createClient();
-    if (!supabase) {
-      setError("Accounts aren't switched on yet. Please check back soon.");
-      return;
-    }
-
     setSubmitting(true);
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: name },
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
-      },
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ firstName: name, email, password }),
     });
-    setSubmitting(false);
 
-    if (error) {
-      setError(error.message);
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setSubmitting(false);
+      setError(data.error || "Could not create your account.");
       return;
     }
 
-    // If email confirmation is on, there's no active session yet.
-    if (data.session) {
-      window.location.assign(next);
-    } else {
-      setDone(true);
-    }
-  }
-
-  if (done) {
-    return (
-      <AuthShell title="Check your inbox" subtitle="One last step.">
-        <p className="text-sm text-gray-600">
-          We&apos;ve sent a confirmation link to <strong>{email}</strong>. Click it
-          to activate your account, then log in.
-        </p>
-        <Link
-          href="/account/login"
-          className="mt-6 block w-full rounded-full bg-wine-800 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-wine-900"
-        >
-          Go to login
-        </Link>
-      </AuthShell>
-    );
+    await refresh();
+    window.location.assign(next);
   }
 
   return (
@@ -87,23 +55,15 @@ export default function SignupForm() {
         </p>
       )}
 
-      <GoogleButton next={next} label="Sign up with Google" />
-
-      <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-wider text-gray-400">
-        <span className="h-px flex-1 bg-gray-200" />
-        or
-        <span className="h-px flex-1 bg-gray-200" />
-      </div>
-
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="name" className="mb-1 block text-sm font-medium text-gray-700">
-            Name
+            First name
           </label>
           <input
             id="name"
             type="text"
-            autoComplete="name"
+            autoComplete="given-name"
             required
             value={name}
             onChange={(e) => setName(e.target.value)}

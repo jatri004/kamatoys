@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { MessageCircle, Package, Heart, LogOut } from "lucide-react";
-import { getUser } from "@/lib/supabase/server";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { getCurrentCustomer } from "@/lib/session";
+import { isShopifyConfigured } from "@/lib/shopify-customer";
 import SignOutButton from "@/components/auth/SignOutButton";
 
 export const metadata: Metadata = {
@@ -17,9 +17,9 @@ export default async function AccountPage({
 }) {
   const { chat } = await searchParams;
 
-  // Before Supabase is configured there's no auth at all — show a friendly
+  // Before Shopify is configured there's no auth at all — show a friendly
   // notice rather than redirect-looping.
-  if (!isSupabaseConfigured) {
+  if (!isShopifyConfigured()) {
     return (
       <div className="mx-auto max-w-md px-4 py-20 text-center">
         <h1 className="text-xl font-bold text-gray-900">Accounts coming soon</h1>
@@ -30,20 +30,18 @@ export default async function AccountPage({
     );
   }
 
-  const user = await getUser();
-  if (!user) redirect("/account/login");
+  const customer = await getCurrentCustomer();
+  if (!customer) redirect("/account/login");
 
   const name =
-    (user.user_metadata?.full_name as string | undefined) ||
-    user.email?.split("@")[0] ||
-    "there";
+    customer.firstName || customer.displayName || customer.email.split("@")[0] || "there";
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Hi {name} 👋</h1>
-          <p className="mt-1 text-sm text-gray-500">{user.email}</p>
+          <p className="mt-1 text-sm text-gray-500">{customer.email}</p>
         </div>
         <SignOutButton />
       </div>

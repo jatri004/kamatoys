@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getUser } from "@/lib/supabase/server";
+import { getCurrentCustomer } from "@/lib/session";
 
 // Server-only WhatsApp number (international format, digits only, e.g.
 // "447123456789"). Because this is read here on the server and never sent to
@@ -14,8 +14,8 @@ const PREFILLED_MESSAGE = "Hi KamaDesires, I have a question about ";
 export async function GET(request: NextRequest) {
   const origin = request.nextUrl.origin;
 
-  const user = await getUser();
-  if (!user) {
+  const customer = await getCurrentCustomer();
+  if (!customer) {
     const loginUrl = new URL("/account/login", origin);
     loginUrl.searchParams.set("next", "/api/whatsapp/launch");
     loginUrl.searchParams.set("reason", "whatsapp");
